@@ -1,23 +1,29 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import userRoutes from './routes/userRoutes.js';
 import dotenv from "dotenv";
 dotenv.config();
+
 const server = express();
 
-//connecting to database
-const dbConnect = async () => {
-    await mongoose.connect(process.env.DB_URI);
-    try {
-        console.log('connected to DB');
+server.use(express.json());
 
-        // server
+// Middleware for routes
+server.use('/quizme/user', userRoutes);
+
+// Connecting to database
+const dbConnect = async () => {
+    try {
+        await mongoose.connect(process.env.DB_URI);
+        console.log('Connected to DB');
+
+        // Start server
         server.listen(process.env.PORT, () => {
-            console.log(`listening to server ${process.env.PORT}`);
+            console.log(`Server listening on port ${process.env.PORT}`);
         });
     } catch (error) {
-        console.log('Error at dbConnect ::', error);
+        console.error('Error connecting to DB:', error);
     }
 };
 
 dbConnect();
-
