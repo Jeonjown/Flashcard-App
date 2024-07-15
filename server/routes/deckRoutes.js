@@ -1,9 +1,15 @@
 import express from 'express';
+import { getDecks } from '../controller/deckController.js';
+import { requireAuth } from '../middleware/requireAuth.js';
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.status(200).json({ msg: 'test' });
-});
+router.use(requireAuth);
+
+// get all decks
+router.get('/', getDecks);
+
+// get specific decks
+
 
 
 

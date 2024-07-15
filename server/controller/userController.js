@@ -15,13 +15,13 @@ export const signupUser = async (req, res) => {
 
     //validate
     if (!email || !password) {
-        res.status(401).json({ error: 'fill all fields' });
+        return res.status(401).json({ error: 'fill all fields' });
     }
     if (!validator.isEmail(email)) {
-        res.status(401).json({ error: 'not a valid email' });
+        return res.status(401).json({ error: 'not a valid email' });
     }
     if (!validator.isStrongPassword(password)) {
-        res.status(401).json({ error: 'password not strong enough' });
+        return res.status(401).json({ error: 'password not strong enough' });
     }
 
     const existingUser = await User.findOne({ email });
@@ -36,9 +36,18 @@ export const signupUser = async (req, res) => {
         const user = await User.create({ email, password: hash });
 
         const token = createToken(user._id);
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
+        });
+
         res.status(200).json({ user, token });
 
         return user;
+
     } catch (error) {
         res.status(401).json({ error: error.message });
     }
@@ -63,9 +72,21 @@ export const loginUser = async (req, res) => {
 
         const token = createToken(user._id);
 
-        res.status(200).json({ user, token });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
+        });
+
+        res.status(200).json({ user });
         return user;
     } catch (error) {
         return res.status(401).json({ error: error.message });
     }
+};
+
+export const logoutUser = async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ msg: "logged out successfully" });
 };
