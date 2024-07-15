@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import userRoutes from './routes/userRoutes.js';
+import deckRoutes from './routes/deckRoutes.js';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -9,7 +10,8 @@ const server = express();
 server.use(express.json());
 
 // Middleware for routes
-server.use('/quizme/user', userRoutes);
+server.use('/quizme/users', userRoutes);
+server.use('/quizme/decks', deckRoutes);
 
 // Connecting to database
 const dbConnect = async () => {

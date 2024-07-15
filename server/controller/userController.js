@@ -65,13 +65,7 @@ export const loginUser = async (req, res) => {
 
         res.status(200).json({ user, token });
         return user;
-
-
     } catch (error) {
         return res.status(401).json({ error: error.message });
     }
-
-
-
-
 };
