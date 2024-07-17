@@ -16,10 +16,10 @@ router.get('/', getDecksByUser);
 router.get('/all', getAllDecks);
 
 // edit deck
-router.put('/edit/:deckID', editDeck);
+router.put('/:deckID', editDeck);
 
 // delete deck 
-router.delete('/delete/:deckID', deleteDeck);
+router.delete('/:deckID', deleteDeck);
 
 
 export default router;

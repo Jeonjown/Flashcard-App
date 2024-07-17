@@ -1,8 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+
+// routes
 import userRoutes from './routes/userRoutes.js';
 import deckRoutes from './routes/deckRoutes.js';
+import flashcardRoutes from './routes/flashcardRoutes.js';
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -32,3 +35,4 @@ dbConnect();
 // Middleware for routes
 server.use('/quizme/users', userRoutes);
 server.use('/quizme/decks', deckRoutes);
+server.use('/quizme/decks/', flashcardRoutes);

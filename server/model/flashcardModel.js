@@ -10,9 +10,9 @@ const flashcardSchema = new mongoose.Schema({
     author: {
         type: String,
     },
-});
+}, { timestamps: true });
 
 
 const Flashcard = mongoose.model('Flashcard', flashcardSchema);
 
-export { flashcardSchema, Flashcard };
+export { Flashcard };

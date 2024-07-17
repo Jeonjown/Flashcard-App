@@ -8,7 +8,7 @@ export const createDeck = async (req, res) => {
         const newDeck = await Deck.create({
             title: req.body.title,
             author: user_id,
-            flashcards: [req.body.flashcards]
+            flashcards: req.body.flashcards || []
         });
 
         res.status(200).json({ newDeck });
@@ -21,7 +21,7 @@ export const createDeck = async (req, res) => {
 // get all decks globally
 export const getAllDecks = async (req, res) => {
     try {
-        const decks = await Deck.find({}).sort({ createdAt: -1 });;
+        const decks = await Deck.find({}).sort({ createdAt: -1 });
 
         res.status(200).json({ decks });
     } catch (error) {

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { flashcardSchema } from "./flashcardmodel.js"; // Ensure the correct relative path and .js extension
+import { Flashcard } from "./flashcardmodel.js";
 
 const deckSchema = new mongoose.Schema({
     title: {
@@ -10,9 +10,12 @@ const deckSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    flashcards: [flashcardSchema]
+    flashcards: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Flashcard'
+    }]
 }, { timestamps: true });
 
 const Deck = mongoose.model('Deck', deckSchema);
 
-export default Deck; // Export the Deck model as default
+export default Deck; 
