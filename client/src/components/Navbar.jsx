@@ -1,14 +1,21 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 const Navbar = () => {
+  const [isHidden, setIsHidden] = useState(false);
+  const handleClick = () => {
+    setIsHidden(!isHidden);
+  };
   return (
     <>
-      <nav className="flex items-center mt-4">
+      <nav className="mt-4 flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-10 ml-5 my-5 text-gray-500 "
+          className="my-5 ml-5 size-10 text-gray-500 md:hidden"
+          onClick={handleClick}
         >
           <path
             strokeLinecap="round"
@@ -16,12 +23,25 @@ const Navbar = () => {
             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
           />
         </svg>
-        <h2 className="text-3xl text-gray-500 font-nunito font-bold ml-2 ">
+        <h2 className="ml-2 font-nunito text-5xl font-bold text-gray-500 md:hidden">
           QuizMe
         </h2>
 
-        <div className="flex ml-auto items-center m-5">
-          <h3 className="text-xl text-gray-500 font-nunito font-bold ml-2">
+        <div className="relative m-5 ml-auto flex items-center">
+          <div className="ml-auto hidden gap-4 md:flex">
+            <Link to={"/login"}>
+              <span className="rounded-full border-2 border-primary px-3 py-1">
+                Login
+              </span>
+            </Link>
+
+            <Link to={"/signup"}>
+              <span className="mr-5 rounded-full border-2 border-primary px-3 py-1">
+                Signup
+              </span>
+            </Link>
+          </div>
+          <h3 className="ml-2 font-nunito text-xl font-bold text-gray-500">
             Bats
           </h3>
           <div>
@@ -29,7 +49,8 @@ const Navbar = () => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="size-10  text-gray-500 ml-1"
+              className="ml-1 size-10 text-gray-500"
+              onClick={handleClick}
             >
               <path
                 fillRule="evenodd"
@@ -37,6 +58,12 @@ const Navbar = () => {
                 clipRule="evenodd"
               />
             </svg>
+
+            <div
+              className={`absolute right-1 top-11 bg-secondary-100 p-2 ${isHidden ? "hidden" : "block"}`}
+            >
+              signout
+            </div>
           </div>
         </div>
       </nav>
