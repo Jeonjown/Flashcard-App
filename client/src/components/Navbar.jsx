@@ -1,28 +1,99 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 const Navbar = () => {
-  const [isHidden, setIsHidden] = useState(false);
-  const handleClick = () => {
-    setIsHidden(!isHidden);
+  const [profile, setProfile] = useState(false);
+  const [hamburger, setHamburger] = useState(false);
+
+  const handleClickProfile = () => {
+    setProfile(!profile);
+  };
+  const handleClickBurger = () => {
+    setHamburger(!hamburger);
   };
   return (
     <>
       <nav className="mt-4 flex items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="my-5 ml-5 size-10 text-gray-500 md:hidden"
-          onClick={handleClick}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-          />
-        </svg>
+        <div className="relative md:hidden">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="my-5 ml-5 size-10 text-gray-500 md:hidden"
+            onClick={handleClickBurger}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+          <div
+            className={`absolute left-5 top-16 bg-secondary-100 p-5 ${hamburger ? "block" : "hidden"} rounded-md shadow-md`}
+          >
+            <Link to={"/home"}>
+              <div className="flex items-center hover:cursor-pointer hover:bg-secondary-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6 md:h-8 md:w-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                  />
+                </svg>
+
+                <div className="ml-2 mt-1">Home</div>
+              </div>
+            </Link>
+            <Link to={"/flashcards"}>
+              <div className="mt-2 flex items-center hover:cursor-pointer hover:bg-secondary-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6 md:h-8 md:w-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+                  />
+                </svg>
+
+                <div className="ml-2 mt-1">Flashcards</div>
+              </div>
+            </Link>
+            <Link to={"/test"}>
+              <div className="mt-2 flex items-center hover:cursor-pointer hover:bg-secondary-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6 md:h-8 md:w-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+                  />
+                </svg>
+                <div className="ml-2 mt-1">Test</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
         <h2 className="ml-2 font-nunito text-5xl font-bold text-gray-500 md:hidden">
           QuizMe
         </h2>
@@ -50,7 +121,7 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               fill="currentColor"
               className="ml-1 size-10 text-gray-500"
-              onClick={handleClick}
+              onClick={handleClickProfile}
             >
               <path
                 fillRule="evenodd"
@@ -60,9 +131,18 @@ const Navbar = () => {
             </svg>
 
             <div
-              className={`absolute right-1 top-11 bg-secondary-100 p-2 ${isHidden ? "hidden" : "block"}`}
+              className={`absolute right-1 top-10 bg-secondary-100 p-3 ${profile ? "block" : "hidden"} rounded-md shadow-md`}
             >
-              signout
+              <Link to={"/login"}>
+                <div className="hover:bg-secondary-200">Login</div>
+              </Link>
+              <Link to={"/signup"}>
+                <div className="my-2 hover:bg-secondary-200">Signup</div>
+              </Link>
+              <hr className="text-primary" />
+              <div className="mt-2 text-primary hover:bg-secondary-200">
+                Signout
+              </div>
             </div>
           </div>
         </div>

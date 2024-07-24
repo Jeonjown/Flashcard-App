@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <Sidebar />
-      <div className="md:col-span-7 md:bg-red-400 lg:col-span-8 lg:bg-blue-200">
+      <div className="md:col-span-7 lg:col-span-8">
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />}></Route>
