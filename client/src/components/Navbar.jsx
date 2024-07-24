@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 const Navbar = () => {
   const [profile, setProfile] = useState(false);
   const [hamburger, setHamburger] = useState(false);
+  const { userInfo } = useAuthContext();
 
   const handleClickProfile = () => {
     setProfile(!profile);
@@ -112,8 +114,8 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
-          <h3 className="ml-2 font-nunito text-xl font-bold text-gray-500">
-            Bats
+          <h3 className="ml-2 font-nunito font-bold text-gray-500 md:text-xl">
+            {userInfo ? userInfo.user.email : "user"}
           </h3>
           <div>
             <svg

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Sidebar = () => {
+  const { dispatch } = useAuthContext();
   return (
     <>
       <div className="hidden bg-white p-4 md:col-span-3 md:block md:h-full lg:col-span-2">
@@ -92,7 +94,12 @@ const Sidebar = () => {
                 d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
               />
             </svg>
-            <div className="ml-2 mt-1 hidden text-sm font-bold md:ml-4 md:block md:text-base">
+            <div
+              className="ml-2 mt-1 hidden text-sm font-bold md:ml-4 md:block md:text-base"
+              onClick={() => {
+                dispatch({ type: "LOGOUT" });
+              }}
+            >
               Logout
             </div>
           </div>

@@ -1,7 +1,17 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
+  const { login } = useLogin();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    await login(email, password);
+  };
+
   return (
     <section className="">
       <div className="mx-auto flex flex-col items-center px-6 py-8 md:h-screen lg:py-0">
@@ -22,9 +32,14 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
+                  autoComplete="email"
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900"
                   placeholder="name@email.com"
                   required
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </div>
               <div>
@@ -38,15 +53,21 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
+                  autoComplete="current-password"
                   placeholder="••••••••"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900"
                   required
+                  value={password}
                 />
               </div>
 
               <button
                 type="submit"
                 className="w-full rounded-lg bg-primary px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                onClick={handleClick}
               >
                 Sign in
               </button>
