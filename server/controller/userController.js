@@ -77,7 +77,7 @@ export const loginUser = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
         });
 
-        res.status(200).json({ msg: 'logged in' });
+        res.status(200).json({ msg: 'login' });
         return user;
     } catch (error) {
         return res.status(401).json({ error: error.message });

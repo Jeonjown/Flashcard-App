@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
 
 const Sidebar = () => {
   const { dispatch } = useAuthContext();
+  const { logout } = useLogout();
   return (
     <>
       <div className="hidden bg-white p-4 md:col-span-3 md:block md:h-full lg:col-span-2">
@@ -97,6 +99,7 @@ const Sidebar = () => {
             <div
               className="ml-2 mt-1 hidden text-sm font-bold md:ml-4 md:block md:text-base"
               onClick={() => {
+                logout();
                 dispatch({ type: "LOGOUT" });
               }}
             >

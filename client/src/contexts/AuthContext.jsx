@@ -1,4 +1,5 @@
-import { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -11,7 +12,6 @@ export const AuthReducer = (state, action) => {
       };
     case "LOGOUT":
       return {
-        ...state,
         userInfo: null,
       };
     default:
@@ -21,9 +21,7 @@ export const AuthReducer = (state, action) => {
 
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, { userInfo: null });
-
-  state.userInfo && console.log("Context: ", state.userInfo.user.email);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const validateAuth = async () => {
       try {
@@ -36,13 +34,22 @@ export const AuthContextProvider = ({ children }) => {
         );
 
         if (!response.ok) {
+          navigate("/login", { replace: true });
           throw new Error("Authentication failed");
         }
 
         const data = await response.json();
+        console.log("from authContext: ", data.isAuthenticated);
+
         dispatch({ type: "LOGIN", payload: data });
+
         if (!data.isAuthenticated) {
-          throw Error("not logged in");
+          navigate("/login", { replace: true });
+          throw new Error("not logged in");
+        }
+
+        if (data.isAuthenticated) {
+          navigate("/home", { replace: true });
         }
       } catch (error) {
         console.error("Error:", error);

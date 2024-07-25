@@ -1,24 +1,37 @@
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Flashcards from "./pages/Flashcards";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Test from "./pages/Test";
 import Home from "./pages/Home";
+import { useAuthContext } from "./hooks/useAuthContext";
 
 function App() {
+  const { userInfo } = useAuthContext();
+
   return (
     <>
       <Sidebar />
       <div className="md:col-span-7 lg:col-span-8">
         <Navbar />
         <Routes>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/flashcards" element={<Flashcards />}></Route>
-          <Route path="/test" element={<Test />}></Route>
-          <Route path="/home" element={<Home />}></Route>
+          <Route
+            path="/login"
+            element={!userInfo ? <Login /> : <Navigate to="/home" />}
+          />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<Home />} />
+          {/* Redirect to login if user is not authenticated */}
+          <Route
+            path="/flashcards"
+            element={userInfo ? <Flashcards /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/test"
+            element={userInfo ? <Test /> : <Navigate to="/login" />}
+          />
         </Routes>
       </div>
     </>

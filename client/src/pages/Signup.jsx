@@ -1,4 +1,15 @@
+import { useState } from "react";
+import { useSignup } from "../hooks/useSignup";
+
 const Signup = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signup } = useSignup();
+  const handleClick = async (e) => {
+    e.preventDefault();
+    await signup(email, password);
+  };
+
   return (
     <section className="">
       <div className="mx-auto flex flex-col items-center px-6 py-8 md:h-screen lg:py-0">
@@ -21,8 +32,13 @@ const Signup = () => {
                 </label>
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   name="email"
                   id="email"
+                  autoComplete="email"
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900"
                   placeholder="name@email.com"
                   required
@@ -39,7 +55,12 @@ const Signup = () => {
                   type="password"
                   name="password"
                   id="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   placeholder="••••••••"
+                  autoComplete="current-password"
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900"
                   required
                 />
@@ -48,6 +69,7 @@ const Signup = () => {
               <button
                 type="submit"
                 className="w-full rounded-lg bg-primary px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                onClick={handleClick}
               >
                 Sign in
               </button>
