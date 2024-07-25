@@ -1,4 +1,22 @@
+import { useEffect } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 const Flashcards = () => {
+  const { userInfo } = useAuthContext();
+  useEffect(() => {
+    const getFlashcard = async () => {
+      const response = await fetch("http://localhost:3000/quizme/decks/", {
+        method: "GET",
+        credentials: "include",
+      });
+      const json = await response.json();
+      console.log(json);
+    };
+    if (userInfo) {
+      getFlashcard();
+    }
+  }, []);
+
   return (
     <>
       {/* titles */}
@@ -10,59 +28,6 @@ const Flashcards = () => {
 
         {/* scroll menu */}
         <div className="overflow-x-auto scroll-smooth whitespace-nowrap md:overflow-x-auto">
-          {/* flashcard container */}
-          <div className="inline-block w-64 shadow-md">
-            {/* card 1 */}
-            <div className="flex h-32 bg-secondary-100 p-3">
-              <p className="h-10 rounded-full bg-secondary-200 px-4 py-2 text-sm font-bold text-gray-500">
-                15 terms
-              </p>
-            </div>
-            {/* card 2 */}
-            <div className="bg-white p-3">
-              <p className="font-bold text-gray-600">Diwata Pares Overload</p>
-              <div className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="size-5"
-                >
-                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-                </svg>
-                <p className="text-l ml-1 mt-1 font-bold text-gray-600">Bats</p>
-                <div></div>
-              </div>
-            </div>
-          </div>
-
-          {/* flashcard container */}
-          <div className="m-4 inline-block w-64 shadow-md">
-            {/* card 1 */}
-            <div className="flex h-32 bg-secondary-100 p-3">
-              <p className="h-10 rounded-full bg-secondary-200 px-4 py-2 text-sm font-bold text-gray-500">
-                15 terms
-              </p>
-            </div>
-
-            {/* card 2 */}
-            <div className="bg-white p-3">
-              <p className="font-bold text-gray-600">Diwata Pares Overload</p>
-              <div className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="size-5"
-                >
-                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-                </svg>
-                <p className="text-l ml-1 mt-1 font-bold text-gray-600">Bats</p>
-                <div></div>
-              </div>
-            </div>
-          </div>
-
           {/* flashcard container */}
           <div className="m-4 inline-block w-64 shadow-md">
             {/* card 1 */}

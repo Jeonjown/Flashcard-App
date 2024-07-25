@@ -1,18 +1,18 @@
 import jwt from 'jsonwebtoken';
 
-export const requireAuth = async (req, res, next) => {
-    const token = await req.cookies.token;
+export const requireAuth = (req, res, next) => {
+    const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).json({ error: 'no token' });
+        return res.status(401).json({ error: 'No token provided' });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET);
         req.user = decoded;
-        res.json({ isAuthenticated: true, user: decoded });
+        console.log("from requireAuth:", req.user);
         next();
     } catch (error) {
-        return res.status(401).json({ error: error.message });
+        return res.status(401).json({ error: 'Invalid token' });
     }
 };

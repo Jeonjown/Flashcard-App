@@ -19,11 +19,15 @@ function App() {
         <Routes>
           <Route
             path="/login"
-            element={!userInfo ? <Login /> : <Navigate to="/home" />}
+            element={!userInfo ? <Login /> : <Navigate to="/" />}
           />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<Home />} />
+
           {/* Redirect to login if user is not authenticated */}
+          <Route
+            path="/"
+            element={userInfo ? <Home /> : <Navigate to="/login" />}
+          />
           <Route
             path="/flashcards"
             element={userInfo ? <Flashcards /> : <Navigate to="/login" />}

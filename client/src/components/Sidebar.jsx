@@ -7,15 +7,15 @@ const Sidebar = () => {
   const { logout } = useLogout();
   return (
     <>
-      <div className="hidden bg-white p-4 md:col-span-3 md:block md:h-full lg:col-span-2">
-        <Link to={"/home"}>
+      <div className="hidden h-full bg-white p-4 md:col-span-3 md:block lg:col-span-2">
+        <Link to={"/"}>
           <h2 className="ml-2 text-4xl font-bold text-gray-500 md:text-5xl">
             QuizMe
           </h2>
         </Link>
 
         <div className="p-4 text-xl md:p-5 md:text-2xl">
-          <Link to={"/home"}>
+          <Link to={"/"}>
             <div className="mt-2 flex items-center hover:cursor-pointer hover:bg-secondary-200">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -34,7 +34,7 @@ const Navbar = () => {
           <div
             className={`absolute left-5 top-16 bg-secondary-100 p-5 ${hamburger ? "block" : "hidden"} rounded-md shadow-md`}
           >
-            <Link to={"/home"}>
+            <Link to={"/"}>
               <div className="flex items-center hover:cursor-pointer hover:bg-secondary-200">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

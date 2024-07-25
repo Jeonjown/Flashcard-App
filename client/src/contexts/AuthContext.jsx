@@ -49,7 +49,7 @@ export const AuthContextProvider = ({ children }) => {
         }
 
         if (data.isAuthenticated) {
-          navigate("/home", { replace: true });
+          navigate("/", { replace: true });
         }
       } catch (error) {
         console.error("Error:", error);

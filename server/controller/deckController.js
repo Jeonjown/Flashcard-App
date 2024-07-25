@@ -21,20 +21,20 @@ export const createDeck = async (req, res) => {
 // get all decks globally
 export const getAllDecks = async (req, res) => {
     try {
-        const decks = await Deck.find({}).sort({ createdAt: -1 });
-
-        res.status(200).json({ decks });
+        const decks = await Deck.find();
+        res.status(200).json(decks); // Send the response once
     } catch (error) {
-        res.status(401).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
 // get all decks by user
 export const getDecksByUser = async (req, res) => {
-    const user_id = await req.user._id;
-    try {
-        const decks = await Deck.find({ author: user_id }).sort({ createdAt: -1 });;
+    console.log("from user: ", req.user.id);
+    const user_id = await req.user.id;
 
+    try {
+        const decks = await Deck.find({ author: user_id }).sort({ createdAt: -1 });
         res.status(200).json({ decks });
     } catch (error) {
         res.status(500).json({ error: error.message });
