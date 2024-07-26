@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
@@ -21,6 +21,7 @@ export const AuthReducer = (state, action) => {
 
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, { userInfo: null });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     const validateAuth = async () => {
@@ -34,7 +35,6 @@ export const AuthContextProvider = ({ children }) => {
         );
 
         if (!response.ok) {
-          navigate("/login", { replace: true });
           throw new Error("Authentication failed");
         }
 
@@ -47,12 +47,10 @@ export const AuthContextProvider = ({ children }) => {
           navigate("/login", { replace: true });
           throw new Error("not logged in");
         }
-
-        if (data.isAuthenticated) {
-          navigate("/", { replace: true });
-        }
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -60,7 +58,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [dispatch]);
 
   return (
-    <AuthContext.Provider value={{ ...state, dispatch }}>
+    <AuthContext.Provider value={{ ...state, dispatch, loading }}>
       {children}
     </AuthContext.Provider>
   );

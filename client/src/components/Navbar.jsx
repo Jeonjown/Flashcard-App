@@ -115,7 +115,7 @@ const Navbar = () => {
             </Link>
           </div>
           <h3 className="ml-2 font-nunito text-sm font-bold text-gray-500 md:text-xl">
-            {userInfo && <p>{userInfo.user.email}</p>}
+            {userInfo && <p>{userInfo.user.username}</p>}
           </h3>
           <div>
             <svg

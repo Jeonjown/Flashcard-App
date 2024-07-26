@@ -16,26 +16,21 @@ const useValidateAuth = () => {
       );
 
       if (!response.ok) {
-        navigate("/login", { replace: true });
         throw new Error("Authentication failed");
       }
 
       const data = await response.json();
       console.log("from useValidateAuth: ", data);
 
-      dispatch({ type: "LOGIN", payload: data });
-
-      if (!data.isAuthenticated) {
+      if (data.isAuthenticated) {
+        dispatch({ type: "LOGIN", payload: data });
+        navigate("/", { replace: true });
+      } else {
         navigate("/login", { replace: true });
         throw new Error("not logged in");
       }
-
-      if (data.isAuthenticated) {
-        navigate("/", { replace: true });
-      }
     } catch (error) {
       console.error("Error:", error);
-      // Optional: Add state management for error
     }
   };
 

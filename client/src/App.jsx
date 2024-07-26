@@ -1,6 +1,6 @@
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import Flashcards from "./pages/Flashcards";
+import Library from "./pages/Library";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -9,18 +9,19 @@ import Home from "./pages/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
 
 function App() {
-  const { userInfo } = useAuthContext();
+  const { userInfo, loading } = useAuthContext();
 
+  if (loading) {
+    // Render a loading indicator while data is being fetched
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <Sidebar />
       <div className="md:col-span-7 lg:col-span-8">
         <Navbar />
         <Routes>
-          <Route
-            path="/login"
-            element={!userInfo ? <Login /> : <Navigate to="/" />}
-          />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
           {/* Redirect to login if user is not authenticated */}
@@ -30,7 +31,7 @@ function App() {
           />
           <Route
             path="/flashcards"
-            element={userInfo ? <Flashcards /> : <Navigate to="/login" />}
+            element={userInfo ? <Library /> : <Navigate to="/login" />}
           />
           <Route
             path="/test"

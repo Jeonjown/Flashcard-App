@@ -1,7 +1,8 @@
+import { useAuthContext } from "./useAuthContext";
 import useValidateAuth from "./useValidateAuth";
 
 export const useLogout = () => {
-  const { validateAuth } = useValidateAuth();
+  const { dispatch } = useAuthContext();
   const logout = async () => {
     try {
       const response = await fetch(
@@ -17,7 +18,6 @@ export const useLogout = () => {
       }
       const json = await response.json();
       console.log(json);
-      await validateAuth();
     } catch (error) {
       console.error(error);
     }

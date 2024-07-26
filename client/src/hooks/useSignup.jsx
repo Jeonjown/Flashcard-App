@@ -8,9 +8,9 @@ export const useSignup = () => {
 
   // Function to validate authentication after login
 
-  const signup = async (email, password) => {
+  const signup = async (username, email, password) => {
     setLoading(true);
-    setError(null); // Reset error state before new login attempt
+    setError(null);
     try {
       const response = await fetch(
         "http://localhost:3000/quizme/users/signup",
@@ -19,7 +19,7 @@ export const useSignup = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ username, email, password }),
           credentials: "include",
         },
       );

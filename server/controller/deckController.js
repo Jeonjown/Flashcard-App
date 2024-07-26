@@ -3,7 +3,8 @@ import Deck from "../model/deckModel.js";
 
 // create decks
 export const createDeck = async (req, res) => {
-    const user_id = await req.user._id;
+    const user_id = await req.user.id;
+    console.log(user_id);
     try {
         const newDeck = await Deck.create({
             title: req.body.title,
