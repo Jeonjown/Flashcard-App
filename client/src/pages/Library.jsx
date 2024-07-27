@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useFlashCardContext } from "../hooks/useFlashcardContext";
+import { useDeckContext } from "../hooks/useDeckContext.jsx";
 import Decks from "../components/Decks.jsx";
 import DecksRecent from "../components/DecksRecent.jsx";
-const Flashcards = () => {
+const Library = () => {
   const { userInfo } = useAuthContext();
-  const { decks, dispatch } = useFlashCardContext();
+  const { decks, dispatch } = useDeckContext();
+
   useEffect(() => {
     const getFlashcard = async () => {
       const response = await fetch("http://localhost:3000/quizme/decks/", {
@@ -23,27 +24,20 @@ const Flashcards = () => {
   return (
     <>
       {/* titles */}
-      <div className="mx-5 lg:mx-40">
+      <div className="mx-5 md:ml-56 lg:ml-96">
         <h1 className="text-3xl font-bold text-gray-500">Flashcards</h1>
-        <h4 className="border-b-2 border-secondary-100 text-xl font-bold text-gray-600">
-          Most Recent
-        </h4>
-        {/* scroll menu */}
-        <div className="overflow-x-auto scroll-smooth whitespace-nowrap md:overflow-x-auto">
-          {/* flashcard container */}
-          {decks && <Decks decks={decks} />}
-        </div>
 
-        <h4 className="border-b-2 border-secondary-100 text-xl font-bold text-gray-600">
-          Your Sets
-        </h4>
+        {/* flashcard container */}
+        {decks && (
+          <DecksRecent decks={decks} username={userInfo.user.username} />
+        )}
 
         <div className="md: mt-5 w-full">
-          {decks && <DecksRecent decks={decks} />}
+          {decks && <Decks decks={decks} username={userInfo.user.username} />}
         </div>
       </div>
     </>
   );
 };
 
-export default Flashcards;
+export default Library;

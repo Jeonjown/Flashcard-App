@@ -7,7 +7,13 @@ export const DeckContext = createContext();
 export const deckReducer = (state, action) => {
   switch (action.type) {
     case "SET_DECKS":
-      return { ...state, decks: action.payload.decks };
+      return { decks: action.payload.decks };
+    case "CREATE_DECK":
+      return { decks: [action.payload, ...state.decks] };
+    case "DELETE_DECK":
+      return {
+        decks: state.decks.filter(),
+      };
     default:
       return state;
   }
@@ -21,8 +27,6 @@ const initialState = {
 // Create the DeckProvider component
 export const DeckContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(deckReducer, initialState);
-
-  console.log(state);
 
   return (
     <DeckContext.Provider value={{ ...state, dispatch }}>

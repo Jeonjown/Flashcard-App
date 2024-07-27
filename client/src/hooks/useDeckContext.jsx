@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { DeckContext } from "../contexts/DeckContext";
 
-export const useFlashCardContext = () => {
+export const useDeckContext = () => {
   const context = useContext(DeckContext);
 
   if (!context) {

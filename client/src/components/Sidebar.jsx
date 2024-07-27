@@ -7,7 +7,7 @@ const Sidebar = () => {
   const { logout } = useLogout();
   return (
     <>
-      <div className="hidden h-full bg-white p-4 md:col-span-3 md:block lg:col-span-2">
+      <div className="fixed hidden h-full bg-white p-4 md:col-span-3 md:block lg:col-span-2">
         <Link to={"/"}>
           <h2 className="ml-2 text-4xl font-bold text-gray-500 md:text-5xl">
             QuizMe
@@ -37,7 +37,7 @@ const Sidebar = () => {
               </div>
             </div>
           </Link>
-          <Link to={"/flashcards"}>
+          <Link to={"/library"}>
             <div className="mt-2 flex items-center hover:cursor-pointer hover:bg-secondary-200">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -30,7 +30,7 @@ function App() {
             element={userInfo ? <Home /> : <Navigate to="/login" />}
           />
           <Route
-            path="/flashcards"
+            path="/library"
             element={userInfo ? <Library /> : <Navigate to="/login" />}
           />
           <Route
