@@ -7,13 +7,10 @@ const useValidateAuth = () => {
 
   const validateAuth = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:3000/quizme/users/validate",
-        {
-          method: "GET",
-          credentials: "include",
-        },
-      );
+      const response = await fetch("http://localhost:3000/users/validate", {
+        method: "GET",
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error("Authentication failed");

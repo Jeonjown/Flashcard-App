@@ -12,17 +12,14 @@ export const useSignup = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        "http://localhost:3000/quizme/users/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, email, password }),
-          credentials: "include",
+      const response = await fetch("http://localhost:3000/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ username, email, password }),
+        credentials: "include",
+      });
 
       const json = await response.json();
 

@@ -102,17 +102,20 @@ const Navbar = () => {
 
         <div className="relative m-5 ml-auto flex items-center">
           <div className="ml-auto hidden gap-4 md:flex">
-            <Link to={"/login"}>
-              <span className="rounded-full border-2 border-primary px-3 py-1">
-                Login
-              </span>
-            </Link>
-
-            <Link to={"/signup"}>
-              <span className="mr-5 rounded-full border-2 border-primary px-3 py-1">
-                Signup
-              </span>
-            </Link>
+            {!userInfo && (
+              <>
+                <Link to="/login">
+                  <span className="rounded-full border-2 border-primary px-3 py-1">
+                    Login
+                  </span>
+                </Link>
+                <Link to="/signup">
+                  <span className="mr-5 rounded-full border-2 border-primary px-3 py-1">
+                    Signup
+                  </span>
+                </Link>
+              </>
+            )}
           </div>
           <h3 className="ml-2 font-nunito text-sm font-bold text-gray-500 md:text-xl">
             {userInfo && <p>{userInfo.user.username}</p>}

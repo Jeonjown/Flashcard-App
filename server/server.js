@@ -38,6 +38,6 @@ const dbConnect = async () => {
 dbConnect();
 
 // Middleware for routes
-server.use('/quizme/users', userRoutes);
-server.use('/quizme/decks', deckRoutes);
-server.use('/quizme/decks/', flashcardRoutes);
+server.use('/users', userRoutes);
+server.use('/decks', deckRoutes);
+server.use('/decks', flashcardRoutes);

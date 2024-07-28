@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Test from "./pages/Test";
 import Home from "./pages/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
+import DeckDetails from "./components/DeckDetails";
 
 function App() {
   const { userInfo, loading } = useAuthContext();
@@ -18,7 +19,7 @@ function App() {
   return (
     <>
       <Sidebar />
-      <div className="md:col-span-7 lg:col-span-8">
+      <div className="md:col-span-7 md:ml-64 lg:col-span-8 lg:ml-96">
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -36,6 +37,10 @@ function App() {
           <Route
             path="/test"
             element={userInfo ? <Test /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/decks/:deckId"
+            element={userInfo ? <DeckDetails /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>

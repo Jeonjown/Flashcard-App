@@ -9,7 +9,7 @@ const Library = () => {
 
   useEffect(() => {
     const getFlashcard = async () => {
-      const response = await fetch("http://localhost:3000/quizme/decks/", {
+      const response = await fetch("http://localhost:3000/decks/", {
         method: "GET",
         credentials: "include",
       });
@@ -24,7 +24,7 @@ const Library = () => {
   return (
     <>
       {/* titles */}
-      <div className="mx-5 md:ml-56 lg:ml-96">
+      <div className="mx-5">
         <h1 className="text-3xl font-bold text-gray-500">Flashcards</h1>
 
         {/* flashcard container */}

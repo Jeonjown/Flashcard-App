@@ -12,7 +12,7 @@ export const useLogin = () => {
     setLoading(true);
     setError(null); // Reset error state before new login attempt
     try {
-      const response = await fetch("http://localhost:3000/quizme/users/login", {
+      const response = await fetch("http://localhost:3000/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
