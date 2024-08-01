@@ -8,6 +8,8 @@ import Test from "./pages/Test";
 import Home from "./pages/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
 import DeckDetails from "./components/DeckDetails";
+import DeckStudy from "./components/DeckStudy";
+import DeckStudyDetails from "./components/DeckStudyDetails";
 
 function App() {
   const { userInfo, loading } = useAuthContext();
@@ -41,6 +43,10 @@ function App() {
           <Route
             path="/decks/:deckId"
             element={userInfo ? <DeckDetails /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/decks/:deckId/study"
+            element={userInfo ? <DeckStudyDetails /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>

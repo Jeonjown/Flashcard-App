@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Flashcard } from "./flashcardmodel.js";
+
 
 const deckSchema = new mongoose.Schema({
     title: {

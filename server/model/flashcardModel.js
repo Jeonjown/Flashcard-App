@@ -10,6 +10,10 @@ const flashcardSchema = new mongoose.Schema({
     author: {
         type: String,
     },
+    learned: {
+        type: Boolean,
+        default: false,
+    }
 }, { timestamps: true });
 
 
