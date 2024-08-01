@@ -2,37 +2,40 @@ import { Flashcard } from "../model/flashcardmodel.js";
 import Deck from "../model/deckModel.js";
 
 
-
-
-
 // create flashcards
 export const createFlashcard = async (req, res) => {
     const deckId = req.params.deckId;
 
     try {
-        let foundDeck = await Deck.findById(deckId).select('flashcards');
+        // Find the deck with the specified deckId and include the flashcards
+        let foundDeck = await Deck.findById(deckId).populate('flashcards');
+
         // Check if the deck exists
         if (!foundDeck) {
-            throw new Error('No deck found');
+            return res.status(404).json({ error: 'No deck found' });
         }
 
         const user_id = req.user._id;
 
+        // Create the new flashcard
         const flashcard = await Flashcard.create({
             term: req.body.term,
             definition: req.body.definition,
             author: user_id
         });
 
-
+        // Add the new flashcard to the deck's flashcards array
         foundDeck.flashcards.push(flashcard);
         foundDeck = await foundDeck.save();
-        res.status(201).json(foundDeck);
+
+        // Return the updated list of flashcards
+        res.status(201).json({ flashcard });
 
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
 };
+
 
 
 // get flashcards

@@ -53,7 +53,6 @@ const Decks = ({ decks = [], username }) => {
     setShowForm(false);
   };
 
-  console.log("from decks", decks);
   return (
     <>
       <div className="flex items-center border-b-2 border-secondary-100 pb-2 font-bold">
@@ -103,7 +102,7 @@ const Decks = ({ decks = [], username }) => {
             className="mt-5 w-full shadow-md hover:scale-105 hover:cursor-pointer hover:shadow-lg"
             key={`${deck._id}`}
           >
-            <Link to={`/decks/${deck._id}`} state={{ deck }}>
+            <Link to={`/decks/${deck._id}`}>
               <div className="flex h-16 bg-secondary-100 p-3">
                 <p className="rounded-full bg-secondary-200 px-4 py-2 text-sm font-bold text-gray-500">
                   {deck.flashcards.length} terms

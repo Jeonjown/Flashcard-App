@@ -8,7 +8,7 @@ const Library = () => {
   const { decks, dispatch } = useDeckContext();
 
   useEffect(() => {
-    const getFlashcard = async () => {
+    const getDecks = async () => {
       const response = await fetch("http://localhost:3000/decks/", {
         method: "GET",
         credentials: "include",
@@ -17,7 +17,7 @@ const Library = () => {
       await dispatch({ type: "SET_DECKS", payload: data });
     };
     if (userInfo) {
-      getFlashcard();
+      getDecks();
     }
   }, [dispatch, userInfo]);
 

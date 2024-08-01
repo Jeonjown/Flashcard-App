@@ -18,6 +18,26 @@ export const createDeck = async (req, res) => {
 
 };
 
+// Get deck by ID
+export const getDeckById = async (req, res) => {
+    const deckId = await req.params.deckId;
+    try {
+        // Find the deck by ID
+        const deck = await Deck.findById(deckId);
+
+        // If no deck is found, return a 404 error
+        if (!deck) {
+            return res.status(404).json({ error: 'Deck not found' });
+        }
+
+        // Return the deck details
+        res.status(200).json({ deck });
+    } catch (error) {
+        // Handle errors and return a 500 status
+        res.status(500).json({ error: error.message });
+    }
+};
+
 // get all decks globally
 export const getAllDecks = async (req, res) => {
     try {
@@ -43,9 +63,9 @@ export const getDecksByUser = async (req, res) => {
 
 // edit deck
 export const editDeck = async (req, res) => {
-    const deckID = await req.params.deckID;
+    const deckId = await req.params.deckId;
     try {
-        const updatedDeck = await Deck.findByIdAndUpdate(deckID, {
+        const updatedDeck = await Deck.findByIdAndUpdate(deckId, {
             title: req.body.title,
         }, { new: true });
 
@@ -62,9 +82,9 @@ export const editDeck = async (req, res) => {
 
 // delete deck 
 export const deleteDeck = async (req, res) => {
-    const deckID = await req.params.deckID;
+    const deckId = await req.params.deckId;
     try {
-        const deletedDeck = await Deck.findByIdAndDelete(deckID);
+        const deletedDeck = await Deck.findByIdAndDelete(deckId);
 
         if (!deletedDeck) {
             return res.status(404).json({ error: 'Deck not found' });

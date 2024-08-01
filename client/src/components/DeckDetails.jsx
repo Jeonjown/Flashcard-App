@@ -1,17 +1,36 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDeckContext } from "../hooks/useDeckContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Flashcard from "./Flashcard";
+import { FlashCardProvider } from "../contexts/FlashcardContext";
 
 const DeckDetails = () => {
-  const { dispatch } = useDeckContext();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { dispatch } = useDeckContext();
   const { deckId } = useParams();
-
-  const deck = location.state?.deck;
-
+  const [deckTitle, setDeckTitle] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState("");
+
+  useEffect(() => {
+    const fetchDeck = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Deck not found");
+        }
+        const data = await response.json();
+        setDeckTitle(data.deck);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    fetchDeck();
+  }, [deckId]);
 
   const handleDelete = async (deckId) => {
     const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
@@ -21,16 +40,18 @@ const DeckDetails = () => {
 
     try {
       if (!response.ok) {
-        throw new Error(response.error);
+        throw new Error("Failed to delete deck");
       }
       const json = await response.json();
       console.log(json.message);
+
+      // Dispatch delete action
+      await dispatch({ type: "DELETE_DECK", payload: deckId });
+
+      navigate("/library", { replace: true });
     } catch (error) {
       console.error(error.message);
     }
-    await dispatch({ type: "DELETE_DECK", payload: deckId });
-
-    navigate("/library", { replace: true });
   };
 
   const handleEdit = async (e) => {
@@ -57,11 +78,8 @@ const DeckDetails = () => {
       // Dispatch action with the updated deck
       await dispatch({ type: "EDIT_DECK", payload: json.updatedDeck });
 
-      // Update location state to reflect the changes
-      navigate(`/decks/${deckId}`, {
-        state: { deck: json.updatedDeck },
-        replace: true, // Prevents adding a new entry to the history stack
-      });
+      // Update local state
+      setDeckTitle(json.updatedDeck);
     } catch (error) {
       console.error("Error updating deck:", error.message);
     }
@@ -74,7 +92,7 @@ const DeckDetails = () => {
   return (
     <>
       <div className="flex items-center border-b-2 border-secondary-100 pb-2 font-bold">
-        <h4 className="text-xl text-gray-600">{deck.title}</h4>
+        <h4 className="text-xl text-gray-600">{deckTitle.title}</h4>
         <button
           className="ml-auto rounded-full border-2 border-primary px-2 py-1 text-sm text-primary hover:scale-105"
           onClick={() => setShowForm((prevShowForm) => !prevShowForm)}
@@ -83,9 +101,7 @@ const DeckDetails = () => {
         </button>
         <button
           className="ml-3 rounded-full border-2 border-primary px-3 py-1 text-sm text-primary"
-          onClick={() => {
-            handleDelete(deckId);
-          }}
+          onClick={() => handleDelete(deckId)}
         >
           Delete
         </button>
@@ -115,8 +131,9 @@ const DeckDetails = () => {
           </button>
         </form>
       )}
-
-      <h1>TBD FLASHCARD RENDER...</h1>
+      <FlashCardProvider>
+        <Flashcard />
+      </FlashCardProvider>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 // Create DeckContext
 export const DeckContext = createContext();
@@ -33,7 +33,28 @@ const initialState = {
 // Create the DeckProvider component
 export const DeckContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(deckReducer, initialState);
-  console.log("deckAuth state: ", state);
+
+  useEffect(() => {
+    const fetchDeck = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/decks/`, {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Deck not found");
+        }
+        const data = await response.json();
+        dispatch({ type: "SET_DECKS", payload: data });
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    fetchDeck();
+  }, []);
+
+  console.log("deck context: ", state);
 
   return (
     <DeckContext.Provider value={{ ...state, dispatch }}>
