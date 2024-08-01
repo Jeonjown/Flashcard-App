@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useReducer } from "react";
 
 export const FlashcardContext = createContext();
 
@@ -8,6 +8,24 @@ export const FlashcardReducer = (state, action) => {
       return { ...state, flashcards: action.payload };
     case "CREATE_FLASHCARD":
       return { ...state, flashcards: [action.payload, ...state.flashcards] };
+    case "DELETE_FLASHCARD":
+      return {
+        ...state,
+        flashcards: state.flashcards.filter((fc) => fc._id !== action.payload),
+      };
+    case "UPDATE_FLASHCARD":
+      return {
+        ...state,
+        flashcards: state.flashcards.map((fc) =>
+          fc._id === action.payload._id
+            ? {
+                ...fc,
+                term: action.payload.term,
+                definition: action.payload.definition,
+              }
+            : fc,
+        ),
+      };
     default:
       return state;
   }

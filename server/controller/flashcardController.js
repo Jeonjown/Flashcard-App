@@ -79,21 +79,21 @@ export const editFlashcard = async (req, res) => {
 
 // delete flashcard 
 export const deleteFlashcard = async (req, res) => {
-    const deckId = req.params.deckId;
-    const flashcardId = req.params.flashcardId;
+    const { deckId, flashcardId } = req.params;
 
     try {
-        // search deckId inside db
-        const foundDeck = await Deck.findById(deckId);
-        if (!foundDeck) { return res.status(404).json({ msg: "deck not found" }); }
-
-        // search flashcardId inside db
+        // Find and remove the flashcard
         const deletedFlashcard = await Flashcard.findByIdAndDelete(flashcardId);
-        if (!deletedFlashcard) { return res.status(404).json({ msg: "flashcard not found" }); }
+        if (!deletedFlashcard) {
+            return res.status(404).json({ msg: "Flashcard not found" });
+        }
 
-        res.status(200).json({ foundDeck, deletedFlashcard });
+        await Deck.findByIdAndUpdate(deckId, {
+            $pull: { flashcards: flashcardId }
+        });
+
+        res.status(200).json({ msg: "Flashcard deleted successfully" });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-
 };
