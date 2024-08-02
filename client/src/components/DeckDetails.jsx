@@ -12,10 +12,13 @@ const DeckDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState("");
 
+  // Base URL from environment variable
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchDeck = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
+        const response = await fetch(`${apiUrl}/decks/${deckId}`, {
           credentials: "include",
         });
 
@@ -30,10 +33,10 @@ const DeckDetails = () => {
     };
 
     fetchDeck();
-  }, [deckId]);
+  }, [deckId, apiUrl]);
 
   const handleDelete = async (deckId) => {
-    const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
+    const response = await fetch(`${apiUrl}/decks/${deckId}`, {
       method: "DELETE",
       credentials: "include",
     });
@@ -58,7 +61,7 @@ const DeckDetails = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
+      const response = await fetch(`${apiUrl}/decks/${deckId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

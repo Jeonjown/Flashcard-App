@@ -7,19 +7,21 @@ export const useLogin = () => {
   const { validateAuth } = useValidateAuth();
 
   // Function to validate authentication after login
-
   const login = async (email, password) => {
     setLoading(true);
     setError(null); // Reset error state before new login attempt
     try {
-      const response = await fetch("http://localhost:3000/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+          credentials: "include",
         },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+      );
 
       const json = await response.json();
       if (!response.ok) {

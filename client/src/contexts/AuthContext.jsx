@@ -23,13 +23,17 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, { userInfo: null });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     const validateAuth = async () => {
       try {
-        const response = await fetch("http://localhost:3000/users/validate", {
-          method: "GET",
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/users/validate`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
 
         if (!response.ok) {
           throw new Error("Authentication failed");
@@ -52,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     validateAuth();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch, loading }}>

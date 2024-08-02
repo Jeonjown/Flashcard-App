@@ -1,4 +1,4 @@
-import { Flashcard } from "../model/flashcardmodel.js";
+import { Flashcard } from "../model/flashcardModel.js";
 import Deck from "../model/deckModel.js";
 
 

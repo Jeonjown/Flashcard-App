@@ -9,6 +9,9 @@ const Decks = ({ decks = [], username }) => {
   const [sortedDecks, setSortedDecks] = useState([]);
   const { dispatch } = useDeckContext();
 
+  // Base URL from environment variable
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (decks.length) {
       const sorted = decks
@@ -20,7 +23,7 @@ const Decks = ({ decks = [], username }) => {
 
   const createDeck = async () => {
     try {
-      const response = await fetch("http://localhost:3000/decks/create", {
+      const response = await fetch(`${apiUrl}/decks/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

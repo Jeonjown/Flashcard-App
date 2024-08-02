@@ -15,9 +15,12 @@ const DeckStudyDetails = () => {
   useEffect(() => {
     const fetchDeck = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/decks/${deckId}`,
+          {
+            credentials: "include",
+          },
+        );
 
         if (!response.ok) {
           throw new Error("Deck not found");
@@ -33,19 +36,21 @@ const DeckStudyDetails = () => {
   }, [deckId]);
 
   const handleDelete = async (deckId) => {
-    const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-
     try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
       if (!response.ok) {
         throw new Error("Failed to delete deck");
       }
       const json = await response.json();
       console.log(json.message);
 
-      // Dispatch delete action
       await dispatch({ type: "DELETE_DECK", payload: deckId });
 
       navigate("/library", { replace: true });
@@ -58,14 +63,17 @@ const DeckStudyDetails = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/decks/${deckId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ title: newName }),
         },
-        credentials: "include",
-        body: JSON.stringify({ title: newName }),
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -75,16 +83,13 @@ const DeckStudyDetails = () => {
       const json = await response.json();
       console.log(json.updatedDeck);
 
-      // Dispatch action with the updated deck
       await dispatch({ type: "EDIT_DECK", payload: json.updatedDeck });
 
-      // Update local state
       setDeckTitle(json.updatedDeck);
     } catch (error) {
       console.error("Error updating deck:", error.message);
     }
 
-    // Clear the newName state outside of try/catch
     setNewName("");
     setShowForm(false);
   };

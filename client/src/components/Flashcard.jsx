@@ -16,7 +16,7 @@ const Flashcard = () => {
     const fetchFlashcards = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/decks/${deckId}/flashcards/`,
+          `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/`,
           { credentials: "include" },
         );
         if (!response.ok) throw new Error("Failed to fetch flashcards");
@@ -33,7 +33,7 @@ const Flashcard = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/decks/${deckId}/flashcards/${currentEditingId}`,
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${currentEditingId}`,
         {
           method: "PUT",
           credentials: "include",
@@ -61,7 +61,7 @@ const Flashcard = () => {
   const handleDeleteFlashcard = async (flashcardId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/decks/${deckId}/flashcards/${flashcardId}`,
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${flashcardId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -78,7 +78,7 @@ const Flashcard = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/decks/${deckId}/flashcards/create`,
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/create`,
         {
           method: "POST",
           credentials: "include",
@@ -176,7 +176,6 @@ const Flashcard = () => {
                   stroke="currentColor"
                   className="size-5 text-gray-600 hover:scale-110 hover:cursor-pointer hover:text-primary"
                   onClick={() => {
-                    // Toggle only the specific flashcard's edit form
                     setCurrentEditingId((prevId) =>
                       prevId === flashcard._id ? null : flashcard._id,
                     );

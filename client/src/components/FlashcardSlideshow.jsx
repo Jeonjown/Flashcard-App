@@ -18,7 +18,7 @@ const FlashcardSlideshow = () => {
     const fetchFlashcards = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/decks/${deckId}/flashcards/`,
+          `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/`,
           { credentials: "include" },
         );
         if (!response.ok) throw new Error("Failed to fetch flashcards");
@@ -36,7 +36,7 @@ const FlashcardSlideshow = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/decks/${deckId}/flashcards/${currentEditingId}`,
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${currentEditingId}`,
         {
           method: "PUT",
           credentials: "include",
@@ -61,7 +61,7 @@ const FlashcardSlideshow = () => {
   const handleDeleteFlashcard = async (flashcardId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/decks/${deckId}/flashcards/${flashcardId}`,
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${flashcardId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -78,7 +78,7 @@ const FlashcardSlideshow = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:3000/decks/${deckId}/flashcards/create`,
+        `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/create`,
         {
           method: "POST",
           credentials: "include",
