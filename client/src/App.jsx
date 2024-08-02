@@ -8,7 +8,6 @@ import Test from "./pages/Test";
 import Home from "./pages/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
 import DeckDetails from "./components/DeckDetails";
-import DeckStudy from "./components/DeckStudy";
 import DeckStudyDetails from "./components/DeckStudyDetails";
 
 function App() {
@@ -21,7 +20,7 @@ function App() {
   return (
     <>
       <Sidebar />
-      <div className="md:col-span-7 md:ml-64 lg:col-span-8 lg:ml-96">
+      <div className="md:col-span-7 md:ml-80 lg:col-span-8 lg:ml-96">
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />

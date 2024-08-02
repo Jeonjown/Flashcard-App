@@ -10,7 +10,7 @@ const DecksRecent = ({ decks, username }) => {
         {decks.map((deck) => (
           <div
             key={`${deck._id}`}
-            className="m-4 inline-block w-64 shadow-md hover:scale-105 hover:cursor-pointer hover:shadow-lg"
+            className="my-4 inline-block w-64 shadow-md hover:scale-105 hover:cursor-pointer hover:shadow-lg"
           >
             <Link to={`/decks/${deck._id}`}>
               <div className="flex h-32 bg-secondary-100 p-3">

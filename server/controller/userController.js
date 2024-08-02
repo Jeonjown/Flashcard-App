@@ -22,7 +22,7 @@ export const signupUser = async (req, res) => {
         return res.status(401).json({ error: 'Not a valid email' });
     }
     if (!validator.isStrongPassword(password)) {
-        return res.status(401).json({ error: 'Password not strong enough' });
+        return res.status(401).json({ error: 'Password must be at least 8 characters long and include uppercase, lowercase, and a number.' });
     }
 
     try {

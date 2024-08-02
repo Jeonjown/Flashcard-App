@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useDeckContext } from "../hooks/useDeckContext";
 import { useState, useEffect } from "react";
-import Flashcard from "./Flashcard";
 import { FlashCardProvider } from "../contexts/FlashcardContext";
 import FlashcardSlideshow from "./FlashcardSlideshow";
 
@@ -93,7 +92,7 @@ const DeckStudyDetails = () => {
   return (
     <>
       <div className="flex items-center border-b-2 border-secondary-100 pb-2 font-bold">
-        <h4 className="text-xl text-gray-600">{deckTitle.title}</h4>
+        <h4 className="mx-5 text-xl text-gray-600">{deckTitle.title}</h4>
         <button
           className="ml-auto rounded-full border-2 border-primary px-2 py-1 text-sm text-primary hover:scale-105"
           onClick={() => setShowForm((prevShowForm) => !prevShowForm)}

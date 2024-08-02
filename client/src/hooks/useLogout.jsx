@@ -1,8 +1,9 @@
 import { useAuthContext } from "./useAuthContext";
-import useValidateAuth from "./useValidateAuth";
+import { useDeckContext } from "./useDeckContext";
 
 export const useLogout = () => {
   const { dispatch } = useAuthContext();
+  const { dispatch: dispatchDeck } = useDeckContext();
   const logout = async () => {
     try {
       const response = await fetch(
@@ -18,6 +19,8 @@ export const useLogout = () => {
       }
       const json = await response.json();
       console.log(json);
+      await dispatch({ type: "LOGOUT" });
+      await dispatchDeck({ type: "SET_DECK", payload: null });
     } catch (error) {
       console.error(error);
     }

@@ -104,6 +104,7 @@ const Flashcard = () => {
 
   return (
     <>
+      <h1 className="mx-5 mt-3 font-bold text-gray-600">Flashcards</h1>
       <button
         className="my-3 ml-3 rounded-full border-2 border-primary px-3 py-1 text-sm font-bold text-primary hover:scale-105"
         onClick={() => setShowAddForm((prev) => !prev)}
@@ -159,7 +160,7 @@ const Flashcard = () => {
             key={flashcard._id}
             className="mb-2 flex flex-col bg-white p-4 shadow-sm"
           >
-            <div className="flex items-center">
+            <div className="mx-5 flex items-center">
               <span className="ml-2 h-full flex-[1] border-r-2 font-bold text-gray-600">
                 {flashcard.term}
               </span>

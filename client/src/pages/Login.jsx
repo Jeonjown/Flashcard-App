@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
-  const { login } = useLogin();
+  const { login, error } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -71,6 +71,7 @@ const Login = () => {
               >
                 Sign in
               </button>
+              <p className="text-[12px] text-primary">{error}</p>
               <p className="text-sm font-light text-gray-500">
                 Don’t have an account yet?{" "}
                 <Link to={"/signup"}>

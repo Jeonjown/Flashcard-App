@@ -5,7 +5,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState(""); // Added state for username
-  const { signup } = useSignup();
+  const { signup, error } = useSignup();
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -96,6 +96,7 @@ const Signup = () => {
               >
                 Sign up
               </button>
+              <p className="text-[12px] text-primary">{error}</p>
             </form>
           </div>
         </div>

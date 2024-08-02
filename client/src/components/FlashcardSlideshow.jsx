@@ -117,22 +117,22 @@ const FlashcardSlideshow = () => {
 
   return (
     <>
-      <div className="mt-8 flex w-full items-center justify-center">
+      <div className="mb-20 mt-8 flex w-full items-center justify-center">
         {flashcards && flashcards.length > 0 && (
-          <div className="relative w-[80%]">
+          <div className="relative h-60 w-[70%] min-w-96 md:h-80 md:max-w-2xl">
             <div
               onClick={handleClick}
-              className={`perspective-1000 duration-600 relative h-60 w-full rounded-sm shadow-sm transition-transform ${flipped ? "rotate-flip" : ""}`}
+              className={`duration-600 relative h-full w-full rounded-sm shadow-sm transition-transform perspective-1000 ${flipped ? "rotate-flip" : ""}`}
             >
               <div
-                className={`backface-hidden absolute inset-0 flex items-center justify-center bg-white px-3 py-5 shadow-sm ${flipped ? "hidden" : ""}`}
+                className={`absolute inset-0 flex items-center justify-center border bg-white px-3 py-5 shadow-sm backface-hidden ${flipped ? "hidden" : ""}`}
               >
                 <p className="text-lg font-bold text-gray-600">
                   {flashcards[currentIndex].term}
                 </p>
               </div>
               <div
-                className={`rotate-flip absolute inset-0 flex items-center justify-center bg-white px-3 py-5 shadow-sm ${flipped ? "" : "hidden"}`}
+                className={`absolute inset-0 flex items-center justify-center border bg-white px-3 py-5 shadow-sm rotate-flip ${flipped ? "" : "hidden"}`}
               >
                 <p className="text-lg font-bold text-gray-600">
                   {flashcards[currentIndex].definition}
@@ -236,7 +236,7 @@ const FlashcardSlideshow = () => {
         flashcards.map((flashcard) => (
           <div
             key={flashcard._id}
-            className="mb-2 flex flex-col bg-white p-4 shadow-sm"
+            className="mx-5 mb-2 flex flex-col bg-white p-4 shadow-sm"
           >
             <div className="flex items-center">
               <span className="ml-2 h-full flex-[1] border-r-2 font-bold text-gray-600">

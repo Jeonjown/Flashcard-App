@@ -25,7 +25,7 @@ const Library = () => {
     <>
       {/* titles */}
       <div className="mx-5">
-        <h1 className="text-3xl font-bold text-gray-500">Flashcards</h1>
+        <h1 className="text-3xl font-bold text-gray-500">Decks</h1>
 
         {/* flashcard container */}
         {decks && (

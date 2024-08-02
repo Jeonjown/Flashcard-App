@@ -91,8 +91,8 @@ const DeckDetails = () => {
 
   return (
     <>
-      <div className="flex items-center border-b-2 border-secondary-100 pb-2 font-bold">
-        <h4 className="text-xl text-gray-600">{deckTitle.title}</h4>
+      <div className="mx-5 flex items-center border-b-2 border-secondary-100 pb-2 font-bold">
+        <h4 className="text-2xl text-gray-600">{deckTitle.title}</h4>
         <button
           className="ml-auto rounded-full border-2 border-primary px-2 py-1 text-sm text-primary hover:scale-105"
           onClick={() => setShowForm((prevShowForm) => !prevShowForm)}
