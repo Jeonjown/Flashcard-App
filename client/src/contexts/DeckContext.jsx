@@ -37,7 +37,7 @@ export const DeckContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchDeck = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/decks/`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/decks/`, {
           credentials: "include",
         });
 

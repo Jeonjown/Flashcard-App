@@ -6,31 +6,33 @@ export const useSignup = () => {
   const [error, setError] = useState(null);
   const { validateAuth } = useValidateAuth();
 
-  // Function to validate authentication after login
-
+  // Function to validate authentication after signup
   const signup = async (username, email, password) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("http://localhost:3000/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, email, password }),
+          credentials: "include",
         },
-        body: JSON.stringify({ username, email, password }),
-        credentials: "include",
-      });
+      );
 
       const json = await response.json();
 
       if (!response.ok) {
-        throw Error(json.error);
+        throw new Error(json.error);
       }
 
-      await validateAuth(); // Validate authentication after successful login
+      await validateAuth(); // Validate authentication after successful signup
     } catch (error) {
       setError(error.message); // Set error state
-      console.error("Login error:", error.message);
+      console.error("Signup error:", error.message);
     } finally {
       setLoading(false); // Reset loading state
     }

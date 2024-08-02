@@ -3,19 +3,30 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useDeckContext } from "../hooks/useDeckContext.jsx";
 import Decks from "../components/Decks.jsx";
 import DecksRecent from "../components/DecksRecent.jsx";
+
 const Library = () => {
   const { userInfo } = useAuthContext();
   const { decks, dispatch } = useDeckContext();
 
   useEffect(() => {
     const getDecks = async () => {
-      const response = await fetch("http://localhost:3000/decks/", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
-      await dispatch({ type: "SET_DECKS", payload: data });
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/decks/`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch decks");
+        }
+
+        const data = await response.json();
+        dispatch({ type: "SET_DECKS", payload: data });
+      } catch (error) {
+        console.error(error.message);
+      }
     };
+
     if (userInfo) {
       getDecks();
     }
@@ -32,7 +43,7 @@ const Library = () => {
           <DecksRecent decks={decks} username={userInfo.user.username} />
         )}
 
-        <div className="md: mt-5 w-full">
+        <div className="w-full md:mt-5">
           {decks && <Decks decks={decks} username={userInfo.user.username} />}
         </div>
       </div>
