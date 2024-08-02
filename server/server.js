@@ -13,7 +13,7 @@ dotenv.config();
 
 const server = express();
 server.use(cors({
-    origin: ['http://localhost:5173', 'https://quizme-backend-nff9.onrender.com'],
+    origin: ['http://localhost:5173', 'https://quizme-frontend.onrender.com'],
     credentials: true
 }));
 
