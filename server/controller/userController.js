@@ -103,18 +103,14 @@ export const logoutUser = async (req, res) => {
 export const validateUser = async (req, res) => {
     const token = req.cookies.token;
     console.log("Token received:", token);
-
-    if (!token) {
-        console.error('Validation Error: No token found');
-        return res.status(401).json({ isAuthenticated: false });
-    }
+    if (!token) return res.status(401).json({ isAuthenticated: false });
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET);
-        console.log('Token decoded:', decoded);
+        console.log(decoded);
         res.json({ isAuthenticated: true, user: decoded });
     } catch (error) {
-        console.error('Validation Error:', error.message);
+        console.error('Token verification failed:', error);
         res.status(401).json({ isAuthenticated: false });
     }
 };
