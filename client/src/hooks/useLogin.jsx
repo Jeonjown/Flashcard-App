@@ -8,10 +8,9 @@ export const useLogin = () => {
   const [error, setError] = useState(null);
   const { validateAuth } = useValidateAuth();
 
-  // Function to handle login
   const login = async (email, password) => {
     setLoading(true);
-    setError(null); // Reset error state before new login attempt
+    setError(null);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/users/login`,
@@ -25,17 +24,22 @@ export const useLogin = () => {
         },
       );
 
-      const json = await response.json();
+      // Check if the response is okay
       if (!response.ok) {
-        throw new Error(json.error);
+        const errorJson = await response.json(); // Try to parse the error JSON
+        throw new Error(errorJson.error || "Unknown error");
       }
 
-      await validateAuth(); // Validate authentication after successful login
+      // Ensure we parse the response JSON
+      const json = await response.json();
+      if (!json) throw new Error("Invalid response format");
+
+      await validateAuth();
     } catch (error) {
-      setError(error.message); // Set error state
+      setError(error.message);
       console.error("Login error:", error);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 

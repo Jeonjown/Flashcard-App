@@ -78,7 +78,7 @@ export const loginUser = async (req, res) => {
         }
 
         const token = createToken(user);
-
+        console.log(process.env.NODE_ENV);
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -102,12 +102,11 @@ export const logoutUser = async (req, res) => {
 // Route handler for user validation
 export const validateUser = async (req, res) => {
     const token = req.cookies.token;
-    console.log("Token received:", token);
-    if (!token) return res.status(401).json({ isAuthenticated: false });
+    console.log("token recieved:", token);
+    if (!token) return res.status(401).json({ msg: "token not recieved" });
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET);
-        console.log(decoded);
         res.json({ isAuthenticated: true, user: decoded });
     } catch (error) {
         console.error('Token verification failed:', error);

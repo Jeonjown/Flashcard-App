@@ -37,17 +37,27 @@ export const DeckContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchDeck = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/decks/`, {
+        const apiUrl = `${import.meta.env.VITE_API_URL}/decks/`;
+        console.log("Fetching from:", apiUrl);
+
+        const response = await fetch(apiUrl, {
           credentials: "include",
         });
-        console.log(response);
+
+        console.log("Response status:", response.status);
+        console.log("Response headers:", response.headers);
+
         if (!response.ok) {
+          // Log response text if not OK
+          const errorText = await response.text();
+          console.error("Error response:", errorText);
           throw new Error("Deck not found");
         }
+
         const data = await response.json();
         dispatch({ type: "SET_DECKS", payload: data });
       } catch (error) {
-        console.error(error.message);
+        console.error("Fetch error:", error.message);
       }
     };
 

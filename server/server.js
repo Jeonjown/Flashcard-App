@@ -2,25 +2,25 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-
-// routes
+import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import deckRoutes from './routes/deckRoutes.js';
 import flashcardRoutes from './routes/flashcardRoutes.js';
 
-import dotenv from "dotenv";
 dotenv.config();
 
 const server = express();
+
+// CORS configuration
 server.use(cors({
-    origin: ['https://quizme-frontend.onrender.com'],
-    credentials: true
+    origin: ['http://localhost:5173', 'https://quizme-frontend.onrender.com'],
+    credentials: true,
 }));
 
 server.use(cookieParser());
 server.use(express.json());
 
-// Connecting to database
+// Connect to the database
 const dbConnect = async () => {
     try {
         await mongoose.connect(process.env.DB_URI);
@@ -36,7 +36,6 @@ const dbConnect = async () => {
 };
 
 dbConnect();
-
 // Middleware for routes
 server.use('/users', userRoutes);
 server.use('/decks', deckRoutes);
