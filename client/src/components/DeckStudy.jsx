@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const DeckStudy = ({ decks = [], username }) => {
   const [deckTitle, setDeckTitle] = useState("");
   const [showForm, setShowForm] = useState(false);
-  // Initialize sortedDecks
   const [sortedDecks, setSortedDecks] = useState([]);
   const { dispatch } = useDeckContext();
 
@@ -20,14 +19,17 @@ const DeckStudy = ({ decks = [], username }) => {
 
   const createDeck = async () => {
     try {
-      const response = await fetch("http://localhost:3000/decks/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/decks/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ title: deckTitle }),
         },
-        credentials: "include",
-        body: JSON.stringify({ title: deckTitle }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error("Response not ok");
@@ -36,9 +38,8 @@ const DeckStudy = ({ decks = [], username }) => {
       const json = await response.json();
       console.log("Created deck:", json);
 
-      // Access deck data from nested structure
       const newDeck = json.newDeck;
-      console.log("newdeck :", newDeck);
+      console.log("newDeck :", newDeck);
 
       dispatch({ type: "CREATE_DECK", payload: newDeck });
     } catch (error) {
