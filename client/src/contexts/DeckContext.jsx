@@ -40,7 +40,7 @@ export const DeckContextProvider = ({ children }) => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/decks/`, {
           credentials: "include",
         });
-
+        console.log(response);
         if (!response.ok) {
           throw new Error("Deck not found");
         }

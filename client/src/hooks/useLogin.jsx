@@ -1,12 +1,14 @@
+// Importing React hooks
 import { useState } from "react";
 import useValidateAuth from "./useValidateAuth";
 
+// Custom hook for login functionality
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { validateAuth } = useValidateAuth();
 
-  // Function to validate authentication after login
+  // Function to handle login
   const login = async (email, password) => {
     setLoading(true);
     setError(null); // Reset error state before new login attempt

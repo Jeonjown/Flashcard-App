@@ -36,10 +36,12 @@ export const AuthContextProvider = ({ children }) => {
         );
 
         if (!response.ok) {
+          console.log(response);
           throw new Error("Authentication failed");
         }
 
         const data = await response.json();
+        console.log(data);
         console.log("from authContext: ", data.isAuthenticated);
 
         dispatch({ type: "LOGIN", payload: data });
