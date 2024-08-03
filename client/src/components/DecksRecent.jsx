@@ -1,7 +1,14 @@
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { useDeckContext } from "../hooks/useDeckContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
-const DecksRecent = ({ decks, username }) => {
+const DecksRecent = () => {
+  const { decks } = useDeckContext();
+  const { userInfo } = useAuthContext();
+
   const validDecks = decks.filter((deck) => deck && deck._id);
+  const username = userInfo.user.username;
 
   return (
     <>

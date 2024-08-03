@@ -30,7 +30,6 @@ export const AuthContextProvider = ({ children }) => {
         const token = localStorage.getItem("authToken"); // Retrieve token from Local Storage
 
         if (!token) {
-          navigate("/login", { replace: true });
           throw new Error("No token found");
         }
 

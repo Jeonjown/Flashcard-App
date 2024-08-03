@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { useDeckContext } from "../hooks/useDeckContext.jsx";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useDeckContext } from "../hooks/useDeckContext";
 import { Link } from "react-router-dom";
 
-const Decks = ({ decks = [], username }) => {
+const Decks = () => {
+  const { userInfo } = useAuthContext(); // Access context inside the component
+  const { decks, dispatch } = useDeckContext(); // Get decks and dispatch from context
   const [deckTitle, setDeckTitle] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [sortedDecks, setSortedDecks] = useState([]);
-  const { dispatch } = useDeckContext();
 
   // Base URL from environment variable
   const apiUrl = import.meta.env.VITE_API_URL;
+  const username = userInfo ? userInfo.username : "Guest"; // Handle case when userInfo is not available
 
   useEffect(() => {
     if (decks.length) {
