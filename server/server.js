@@ -10,6 +10,8 @@ import flashcardRoutes from './routes/flashcardRoutes.js';
 dotenv.config();
 
 const server = express();
+server.use(cookieParser());
+server.use(express.json());
 
 // CORS configuration
 server.use(cors({
@@ -17,8 +19,7 @@ server.use(cors({
     credentials: true,
 }));
 
-server.use(cookieParser());
-server.use(express.json());
+
 
 // Connect to the database
 const dbConnect = async () => {
@@ -27,7 +28,7 @@ const dbConnect = async () => {
         console.log('Connected to DB');
 
         // Start server
-        server.listen(process.env.PORT, () => {
+        server.listen(process.env.PORT, '0.0.0.0', () => {
             console.log(`Server listening on port ${process.env.PORT}`);
         });
     } catch (error) {

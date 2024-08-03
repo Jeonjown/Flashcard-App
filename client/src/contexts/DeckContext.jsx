@@ -41,6 +41,7 @@ export const DeckContextProvider = ({ children }) => {
         console.log("Fetching from:", apiUrl);
 
         const response = await fetch(apiUrl, {
+          method: "GET",
           credentials: "include",
         });
 

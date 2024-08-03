@@ -47,8 +47,9 @@ export const signupUser = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict',
-            maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
+            sameSite: 'none',
+            maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
+            domain: 'nff9.onrender.com',
         });
 
         res.status(201).json({ user, token }); // Use 201 for created resource
@@ -82,8 +83,9 @@ export const loginUser = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict',
-            maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
+            sameSite: 'None',
+            maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
+            domain: 'nff9.onrender.com',
         });
 
         res.status(200).json({ msg: 'Login successful', token });
