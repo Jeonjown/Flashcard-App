@@ -18,8 +18,11 @@ const DeckDetails = () => {
   useEffect(() => {
     const fetchDeck = async () => {
       try {
+        const token = localStorage.getItem("authToken"); // Retrieve token from local storage
         const response = await fetch(`${apiUrl}/decks/${deckId}`, {
-          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in headers
+          },
         });
 
         if (!response.ok) {
@@ -36,12 +39,16 @@ const DeckDetails = () => {
   }, [deckId, apiUrl]);
 
   const handleDelete = async (deckId) => {
-    const response = await fetch(`${apiUrl}/decks/${deckId}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
 
     try {
+      const response = await fetch(`${apiUrl}/decks/${deckId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in headers
+        },
+      });
+
       if (!response.ok) {
         throw new Error("Failed to delete deck");
       }
@@ -59,14 +66,15 @@ const DeckDetails = () => {
 
   const handleEdit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
 
     try {
       const response = await fetch(`${apiUrl}/decks/${deckId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in headers
         },
-        credentials: "include",
         body: JSON.stringify({ title: newName }),
       });
 

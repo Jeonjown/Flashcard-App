@@ -7,11 +7,17 @@ const useValidateAuth = () => {
 
   const validateAuth = async () => {
     try {
+      // Get the token from Local Storage
+      const token = localStorage.getItem("authToken");
+
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/users/validate`,
         {
           method: "GET",
-          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
+            "Content-Type": "application/json",
+          },
         },
       );
 

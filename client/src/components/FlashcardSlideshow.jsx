@@ -14,16 +14,37 @@ const FlashcardSlideshow = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false); // State for flipping
 
+  // Fetch flashcards on mount or deckId change
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          console.error("No token found in local storage.");
+          return;
+        }
+
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/`,
-          { credentials: "include" },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         );
-        if (!response.ok) throw new Error("Failed to fetch flashcards");
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error(`Failed to fetch flashcards: ${errorText}`);
+          throw new Error(`Failed to fetch flashcards: ${response.status}`);
+        }
+
         const data = await response.json();
         dispatch({ type: "SET_FLASHCARDS", payload: data.flashcards });
+        localStorage.setItem(
+          `flashcards_${deckId}`,
+          JSON.stringify(data.flashcards),
+        );
         if (data.flashcards.length > 0) setCurrentIndex(0);
       } catch (error) {
         console.error("Error fetching flashcards:", error);
@@ -32,6 +53,7 @@ const FlashcardSlideshow = () => {
     fetchFlashcards();
   }, [deckId, dispatch]);
 
+  // Handle flashcard updates
   const handleEditFlashcard = async (e) => {
     e.preventDefault();
     try {
@@ -39,17 +61,25 @@ const FlashcardSlideshow = () => {
         `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${currentEditingId}`,
         {
           method: "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ term: editTerm, definition: editDefinition }),
         },
       );
-
       if (!response.ok) throw new Error("Failed to update flashcard");
       const data = await response.json();
       dispatch({ type: "UPDATE_FLASHCARD", payload: data.updatedFlashcard });
+
+      // Update local storage
+      const updatedFlashcards = flashcards.map((flashcard) =>
+        flashcard._id === data.updatedFlashcard._id
+          ? data.updatedFlashcard
+          : flashcard,
+      );
+      localStorage.setItem(
+        `flashcards_${deckId}`,
+        JSON.stringify(updatedFlashcards),
+      );
+
       setEditTerm("");
       setEditDefinition("");
       setCurrentEditingId(null);
@@ -58,39 +88,87 @@ const FlashcardSlideshow = () => {
     }
   };
 
+  // Handle flashcard deletion
   const handleDeleteFlashcard = async (flashcardId) => {
     try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        console.error("No token found in local storage.");
+        return;
+      }
+
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${flashcardId}`,
         {
           method: "DELETE",
-          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
       );
-      if (!response.ok) throw new Error("Failed to delete flashcard");
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Failed to delete flashcard: ${errorText}`);
+        throw new Error("Failed to delete flashcard");
+      }
+
       dispatch({ type: "DELETE_FLASHCARD", payload: flashcardId });
+
+      const updatedFlashcards = flashcards.filter(
+        (flashcard) => flashcard._id !== flashcardId,
+      );
+      localStorage.setItem(
+        `flashcards_${deckId}`,
+        JSON.stringify(updatedFlashcards),
+      );
     } catch (error) {
       console.error("Error deleting flashcard:", error);
     }
   };
 
+  // Handle adding a flashcard
   const handleAddFlashcard = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        console.error("No token found in local storage.");
+        return;
+      }
+
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/create`,
         {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token here
           },
           body: JSON.stringify({ term, definition }),
         },
       );
-      if (!response.ok) throw new Error("Error creating flashcard");
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.error("Unauthorized: Check your authentication token.");
+        } else {
+          const errorText = await response.text();
+          console.error(`Error creating flashcard: ${errorText}`);
+        }
+        throw new Error("Error creating flashcard");
+      }
+
       const data = await response.json();
       dispatch({ type: "CREATE_FLASHCARD", payload: data.flashcard });
+
+      // Update local storage
+      const updatedFlashcards = [...flashcards, data.flashcard];
+      localStorage.setItem(
+        `flashcards_${deckId}`,
+        JSON.stringify(updatedFlashcards),
+      );
+
       setTerm("");
       setDefinition("");
       setShowAddForm(false);
@@ -98,7 +176,7 @@ const FlashcardSlideshow = () => {
       console.error("Error:", error);
     }
   };
-
+  // Navigate between flashcards
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex > 0 ? prevIndex - 1 : flashcards.length - 1,
@@ -111,6 +189,7 @@ const FlashcardSlideshow = () => {
     );
   };
 
+  // Toggle flip state
   const handleClick = () => {
     setFlipped(!flipped);
   };
@@ -200,13 +279,12 @@ const FlashcardSlideshow = () => {
               Term
             </label>
             <input
-              className="w-full rounded border px-3 py-2"
               type="text"
               id="term"
-              name="term"
-              placeholder="Flashcard term"
               value={term}
               onChange={(e) => setTerm(e.target.value)}
+              className="mt-1 w-full rounded border px-3 py-2"
+              required
             />
           </div>
           <div className="mb-4">
@@ -214,20 +292,19 @@ const FlashcardSlideshow = () => {
               Definition
             </label>
             <input
-              className="w-full rounded border px-3 py-2"
               type="text"
               id="definition"
-              name="definition"
-              placeholder="Flashcard definition"
               value={definition}
               onChange={(e) => setDefinition(e.target.value)}
+              className="w-full rounded border px-3 py-2"
+              required
             />
           </div>
           <button
             type="submit"
-            className="hover:bg-primary-dark rounded-full bg-primary px-4 py-2 text-white"
+            className="w-full rounded bg-primary px-4 py-2 text-white"
           >
-            Save
+            Add Flashcard
           </button>
         </form>
       )}
@@ -236,9 +313,9 @@ const FlashcardSlideshow = () => {
         flashcards.map((flashcard) => (
           <div
             key={flashcard._id}
-            className="mx-5 mb-2 flex flex-col bg-white p-4 shadow-sm"
+            className="mb-2 flex flex-col bg-white p-4 shadow-md"
           >
-            <div className="flex items-center">
+            <div className="mx-5 flex items-center">
               <span className="ml-2 h-full flex-[1] border-r-2 font-bold text-gray-600">
                 {flashcard.term}
               </span>
@@ -339,6 +416,46 @@ const FlashcardSlideshow = () => {
         ))
       ) : (
         <p>No flashcards available.</p>
+      )}
+
+      {currentEditingId && (
+        <form
+          onSubmit={handleEditFlashcard}
+          className="mt-5 w-full bg-white p-4 shadow-md"
+        >
+          <div className="mb-4">
+            <label htmlFor="editTerm" className="text-gray-600">
+              Term
+            </label>
+            <input
+              type="text"
+              id="editTerm"
+              value={editTerm}
+              onChange={(e) => setEditTerm(e.target.value)}
+              className="mt-1 block w-full rounded border-gray-300 shadow-sm"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="editDefinition" className="text-gray-600">
+              Definition
+            </label>
+            <input
+              type="text"
+              id="editDefinition"
+              value={editDefinition}
+              onChange={(e) => setEditDefinition(e.target.value)}
+              className="w-full rounded border px-3 py-2"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full rounded bg-primary px-4 py-2 text-white"
+          >
+            Update Flashcard
+          </button>
+        </form>
       )}
     </>
   );

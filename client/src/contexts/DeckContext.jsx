@@ -27,7 +27,7 @@ export const deckReducer = (state, action) => {
 
 // Initial state
 const initialState = {
-  decks: null,
+  decks: [null],
 };
 
 // Create the DeckProvider component
@@ -35,14 +35,22 @@ export const DeckContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(deckReducer, initialState);
 
   useEffect(() => {
-    const fetchDeck = async () => {
+    const fetchDecks = async () => {
       try {
+        const token = localStorage.getItem("authToken"); // Retrieve token from Local Storage
+
+        if (!token) {
+          throw new Error("No token found");
+        }
+
         const apiUrl = `${import.meta.env.VITE_API_URL}/decks/`;
         console.log("Fetching from:", apiUrl);
 
         const response = await fetch(apiUrl, {
           method: "GET",
-          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token in Authorization header
+          },
         });
 
         console.log("Response status:", response.status);
@@ -62,7 +70,7 @@ export const DeckContextProvider = ({ children }) => {
       }
     };
 
-    fetchDeck();
+    fetchDecks();
   }, []);
 
   console.log("deck context: ", state);

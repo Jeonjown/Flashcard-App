@@ -125,7 +125,7 @@ const Navbar = () => {
 
       <div
         ref={profileRef}
-        className="relative my-5 ml-auto flex items-center hover:scale-105 hover:cursor-pointer"
+        className="relative my-5 ml-auto mr-4 flex items-center hover:scale-105 hover:cursor-pointer"
         onClickCapture={handleClickProfile}
       >
         <div className="ml-auto hidden gap-4 md:flex">

@@ -19,7 +19,6 @@ export const useSignup = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ username, email, password }),
-          credentials: "include",
         },
       );
 
@@ -28,6 +27,9 @@ export const useSignup = () => {
       if (!response.ok) {
         throw new Error(json.error);
       }
+
+      // Store the token in Local Storage
+      localStorage.setItem("authToken", json.token);
 
       await validateAuth(); // Validate authentication after successful signup
     } catch (error) {

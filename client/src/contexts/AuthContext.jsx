@@ -27,11 +27,20 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const validateAuth = async () => {
       try {
+        const token = localStorage.getItem("authToken"); // Retrieve token from Local Storage
+
+        if (!token) {
+          navigate("/login", { replace: true });
+          throw new Error("No token found");
+        }
+
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/users/validate`,
           {
             method: "GET",
-            credentials: "include",
+            headers: {
+              Authorization: `Bearer ${token}`, // Send token in Authorization header
+            },
           },
         );
 
@@ -48,10 +57,11 @@ export const AuthContextProvider = ({ children }) => {
 
         if (!data.isAuthenticated) {
           navigate("/login", { replace: true });
-          throw new Error("not logged in");
+          throw new Error("Not logged in");
         }
       } catch (error) {
         console.error("Error:", error);
+        dispatch({ type: "LOGOUT" }); // Ensure to clear the userInfo on error
       } finally {
         setLoading(false);
       }

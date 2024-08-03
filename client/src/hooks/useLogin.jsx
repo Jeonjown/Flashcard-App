@@ -20,7 +20,6 @@ export const useLogin = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email, password }),
-          credentials: "include",
         },
       );
 
@@ -32,7 +31,10 @@ export const useLogin = () => {
 
       // Ensure we parse the response JSON
       const json = await response.json();
-      if (!json) throw new Error("Invalid response format");
+      if (!json.token) throw new Error("Invalid response format");
+
+      // Store the JWT in Local Storage
+      localStorage.setItem("authToken", json.token);
 
       await validateAuth();
     } catch (error) {

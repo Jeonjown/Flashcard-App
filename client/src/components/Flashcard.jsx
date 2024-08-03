@@ -14,10 +14,16 @@ const Flashcard = () => {
 
   useEffect(() => {
     const fetchFlashcards = async () => {
+      const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/`,
-          { credentials: "include" },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in headers
+            },
+          },
         );
         if (!response.ok) throw new Error("Failed to fetch flashcards");
         const data = await response.json();
@@ -31,14 +37,16 @@ const Flashcard = () => {
 
   const handleEditFlashcard = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${currentEditingId}`,
         {
           method: "PUT",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in headers
           },
           body: JSON.stringify({ term: editTerm, definition: editDefinition }),
         },
@@ -59,12 +67,16 @@ const Flashcard = () => {
   };
 
   const handleDeleteFlashcard = async (flashcardId) => {
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/${flashcardId}`,
         {
           method: "DELETE",
-          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in headers
+          },
         },
       );
       if (!response.ok) throw new Error("Failed to delete flashcard");
@@ -76,14 +88,16 @@ const Flashcard = () => {
 
   const handleAddFlashcard = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/decks/${deckId}/flashcards/create`,
         {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in headers
           },
           body: JSON.stringify({ term, definition }),
         },

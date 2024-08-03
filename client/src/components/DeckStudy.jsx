@@ -18,6 +18,8 @@ const DeckStudy = ({ decks = [], username }) => {
   }, [decks]);
 
   const createDeck = async () => {
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/decks/create`,
@@ -25,8 +27,8 @@ const DeckStudy = ({ decks = [], username }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in headers
           },
-          credentials: "include",
           body: JSON.stringify({ title: deckTitle }),
         },
       );
@@ -39,7 +41,7 @@ const DeckStudy = ({ decks = [], username }) => {
       console.log("Created deck:", json);
 
       const newDeck = json.newDeck;
-      console.log("newDeck :", newDeck);
+      console.log("newDeck:", newDeck);
 
       dispatch({ type: "CREATE_DECK", payload: newDeck });
     } catch (error) {
@@ -102,7 +104,7 @@ const DeckStudy = ({ decks = [], username }) => {
           sortedDecks.map((deck) => (
             <div
               className="mt-5 w-full min-w-48 shadow-md hover:scale-105 hover:cursor-pointer hover:shadow-lg"
-              key={`${deck._id}`}
+              key={deck._id}
             >
               <Link to={`/decks/${deck._id}/study`}>
                 <div className="flex h-16 bg-secondary-100 p-3">

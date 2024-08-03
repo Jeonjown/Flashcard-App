@@ -14,11 +14,15 @@ const DeckStudyDetails = () => {
 
   useEffect(() => {
     const fetchDeck = async () => {
+      const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/decks/${deckId}`,
           {
-            credentials: "include",
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in headers
+            },
           },
         );
 
@@ -36,12 +40,16 @@ const DeckStudyDetails = () => {
   }, [deckId]);
 
   const handleDelete = async (deckId) => {
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/decks/${deckId}`,
         {
           method: "DELETE",
-          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in headers
+          },
         },
       );
 
@@ -61,6 +69,7 @@ const DeckStudyDetails = () => {
 
   const handleEdit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
 
     try {
       const response = await fetch(
@@ -69,8 +78,8 @@ const DeckStudyDetails = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in headers
           },
-          credentials: "include",
           body: JSON.stringify({ title: newName }),
         },
       );

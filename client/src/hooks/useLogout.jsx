@@ -8,10 +8,13 @@ export const useLogout = () => {
   const logout = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/quizme/users/logout`,
+        `${import.meta.env.VITE_API_URL}/users/logout`,
         {
           method: "POST",
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token if needed
+          },
         },
       );
 
@@ -22,8 +25,13 @@ export const useLogout = () => {
       const json = await response.json();
       console.log(json);
 
-      await dispatch({ type: "LOGOUT" });
-      await dispatchDeck({ type: "SET_DECK", payload: null });
+      // Clear token from Local Storage
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("decks");
+
+      // Dispatch logout actions
+      dispatch({ type: "LOGOUT" });
+      dispatchDeck({ type: "SET_DECKS", payload: [null] }); // Assuming empty decks after logout
     } catch (error) {
       console.error("Logout error:", error);
     }

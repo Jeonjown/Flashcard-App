@@ -44,14 +44,6 @@ export const signupUser = async (req, res) => {
 
         const token = createToken(user);
 
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
-            maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
-            domain: 'nff9.onrender.com',
-        });
-
         res.status(201).json({ user, token }); // Use 201 for created resource
     } catch (error) {
         console.error('Signup Error:', error.message);
@@ -80,13 +72,6 @@ export const loginUser = async (req, res) => {
 
         const token = createToken(user);
         console.log(process.env.NODE_ENV);
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'None',
-            maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
-            domain: 'nff9.onrender.com',
-        });
 
         res.status(200).json({ msg: 'Login successful', token });
     } catch (error) {
@@ -97,15 +82,17 @@ export const loginUser = async (req, res) => {
 
 // Route handler for user logout
 export const logoutUser = async (req, res) => {
-    res.clearCookie('token');
+    // No cookie to clear, just send a message
     res.status(200).json({ msg: "Logged out successfully" });
 };
 
 // Route handler for user validation
 export const validateUser = async (req, res) => {
-    const token = req.cookies.token;
-    console.log("token recieved:", token);
-    if (!token) return res.status(401).json({ msg: "token not recieved" });
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) return res.status(401).json({ msg: "No token provided" });
+
+    const token = authHeader.split(' ')[1]; // Extract token from "Bearer <token>"
+    if (!token) return res.status(401).json({ msg: "Token not received" });
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET);

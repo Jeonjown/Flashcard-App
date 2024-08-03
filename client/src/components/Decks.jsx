@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const Decks = ({ decks = [], username }) => {
   const [deckTitle, setDeckTitle] = useState("");
   const [showForm, setShowForm] = useState(false);
-  // Initialize sortedDecks
   const [sortedDecks, setSortedDecks] = useState([]);
   const { dispatch } = useDeckContext();
 
@@ -22,13 +21,15 @@ const Decks = ({ decks = [], username }) => {
   }, [decks]);
 
   const createDeck = async () => {
+    const token = localStorage.getItem("authToken"); // Retrieve token from local storage
+
     try {
       const response = await fetch(`${apiUrl}/decks/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in headers
         },
-        credentials: "include",
         body: JSON.stringify({ title: deckTitle }),
       });
 
@@ -39,9 +40,8 @@ const Decks = ({ decks = [], username }) => {
       const json = await response.json();
       console.log("Created deck:", json);
 
-      // Access deck data from nested structure
       const newDeck = json.newDeck;
-      console.log("newdeck :", newDeck);
+      console.log("newDeck:", newDeck);
 
       dispatch({ type: "CREATE_DECK", payload: newDeck });
     } catch (error) {
@@ -103,7 +103,7 @@ const Decks = ({ decks = [], username }) => {
         sortedDecks.map((deck) => (
           <div
             className="mt-5 w-full shadow-md hover:scale-105 hover:cursor-pointer hover:shadow-lg"
-            key={`${deck._id}`}
+            key={deck._id}
           >
             <Link to={`/decks/${deck._id}`}>
               <div className="flex h-16 bg-secondary-100 p-3">

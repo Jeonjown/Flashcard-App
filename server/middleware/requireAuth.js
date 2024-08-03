@@ -1,8 +1,13 @@
 import jwt from 'jsonwebtoken';
 
 export const requireAuth = (req, res, next) => {
-    const token = req.cookies.token;
+    // Extract token from Authorization header
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) {
+        return res.status(401).json({ error: 'No token provided' });
+    }
 
+    const token = authHeader.split(' ')[1]; // Extract token from "Bearer <token>"
     if (!token) {
         return res.status(401).json({ error: 'No token provided' });
     }

@@ -3,7 +3,8 @@ import Deck from "../model/deckModel.js";
 
 // create decks
 export const createDeck = async (req, res) => {
-    const user_id = await req.user.id;
+    const user_id = req.user.id;
+
     try {
         const newDeck = await Deck.create({
             title: req.body.title,
@@ -11,29 +12,25 @@ export const createDeck = async (req, res) => {
             flashcards: req.body.flashcards || []
         });
 
-        res.status(200).json({ newDeck });
+        res.status(201).json({ newDeck });
     } catch (error) {
         return res.status(400).json({ error: error.message });
     }
-
 };
 
 // Get deck by ID
 export const getDeckById = async (req, res) => {
-    const deckId = await req.params.deckId;
+    const deckId = req.params.deckId;
+
     try {
-        // Find the deck by ID
         const deck = await Deck.findById(deckId);
 
-        // If no deck is found, return a 404 error
         if (!deck) {
             return res.status(404).json({ error: 'Deck not found' });
         }
 
-        // Return the deck details
         res.status(200).json({ deck });
     } catch (error) {
-        // Handle errors and return a 500 status
         res.status(500).json({ error: error.message });
     }
 };
@@ -42,16 +39,16 @@ export const getDeckById = async (req, res) => {
 export const getAllDecks = async (req, res) => {
     try {
         const decks = await Deck.find();
-        res.status(200).json(decks); // Send the response once
+        res.status(200).json(decks);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
+
 // get all decks by user
 export const getDecksByUser = async (req, res) => {
-    console.log("from user: ", req.user.id);
-    const user_id = await req.user.id;
+    const user_id = req.user.id;
 
     try {
         const decks = await Deck.find({ author: user_id }).sort({ createdAt: -1 });
@@ -63,7 +60,8 @@ export const getDecksByUser = async (req, res) => {
 
 // edit deck
 export const editDeck = async (req, res) => {
-    const deckId = await req.params.deckId;
+    const deckId = req.params.deckId;
+
     try {
         const updatedDeck = await Deck.findByIdAndUpdate(deckId, {
             title: req.body.title,
@@ -74,7 +72,6 @@ export const editDeck = async (req, res) => {
         }
 
         res.status(200).json({ updatedDeck });
-
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -82,15 +79,16 @@ export const editDeck = async (req, res) => {
 
 // delete deck 
 export const deleteDeck = async (req, res) => {
-    const deckId = await req.params.deckId;
+    const deckId = req.params.deckId;
+
     try {
         const deletedDeck = await Deck.findByIdAndDelete(deckId);
 
         if (!deletedDeck) {
             return res.status(404).json({ error: 'Deck not found' });
         }
-        res.status(200).json({ message: 'Deck deleted successfully', deletedDeck });
 
+        res.status(200).json({ message: 'Deck deleted successfully', deletedDeck });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
