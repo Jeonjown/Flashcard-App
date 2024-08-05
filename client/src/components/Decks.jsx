@@ -4,8 +4,8 @@ import { useDeckContext } from "../hooks/useDeckContext";
 import { Link } from "react-router-dom";
 
 const Decks = () => {
-  const { userInfo } = useAuthContext(); // Access context inside the component
-  const { decks, dispatch } = useDeckContext(); // Get decks and dispatch from context
+  const { userInfo } = useAuthContext();
+  const { decks, dispatch } = useDeckContext();
   const [deckTitle, setDeckTitle] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [sortedDecks, setSortedDecks] = useState([]);

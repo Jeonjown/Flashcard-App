@@ -1,4 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
+import { AuthContext } from "./AuthContext"; // Adjust the import path if needed
+import { useAuthContext } from "../hooks/useAuthContext";
 
 // Create DeckContext
 export const DeckContext = createContext();
@@ -27,17 +29,21 @@ export const deckReducer = (state, action) => {
 
 // Initial state
 const initialState = {
-  decks: [null],
+  decks: [],
 };
 
 // Create the DeckProvider component
 export const DeckContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(deckReducer, initialState);
+  const { userInfo } = useAuthContext(); // Get authentication state
 
   useEffect(() => {
     const fetchDecks = async () => {
+      if (!userInfo) return; // Check if user is authenticated
+
+      console.log("fetch deck context ran");
       try {
-        const token = localStorage.getItem("authToken"); // Retrieve token from Local Storage
+        const token = localStorage.getItem("authToken");
 
         if (!token) {
           throw new Error("No token found");
@@ -49,7 +55,7 @@ export const DeckContextProvider = ({ children }) => {
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Send token in Authorization header
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -57,7 +63,6 @@ export const DeckContextProvider = ({ children }) => {
         console.log("Response headers:", response.headers);
 
         if (!response.ok) {
-          // Log response text if not OK
           const errorText = await response.text();
           console.error("Error response:", errorText);
           throw new Error("Deck not found");
@@ -71,7 +76,7 @@ export const DeckContextProvider = ({ children }) => {
     };
 
     fetchDecks();
-  }, []);
+  }, [userInfo]); // Dependency array includes userInfo
 
   console.log("deck context: ", state);
 

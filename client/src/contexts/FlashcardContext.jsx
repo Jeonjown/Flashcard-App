@@ -32,7 +32,7 @@ export const FlashcardReducer = (state, action) => {
 };
 
 const initialState = {
-  flashcards: null,
+  flashcards: [],
 };
 
 export const FlashCardProvider = ({ children }) => {
