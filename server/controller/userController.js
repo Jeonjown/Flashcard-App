@@ -46,6 +46,15 @@ export const signupUser = async (req, res) => {
 
         res.status(201).json({ user, token }); // Use 201 for created resource
     } catch (error) {
+        if (error.code === 11000) {
+            // Check if error is related to duplicate key
+            if (error.keyPattern.email) {
+                return res.status(400).json({ error: 'Email already in use' });
+            }
+            if (error.keyPattern.username) {
+                return res.status(400).json({ error: 'Username already in use' });
+            }
+        }
         console.error('Signup Error:', error.message);
         res.status(500).json({ error: 'Internal server error' }); // Use 500 for server error
     }

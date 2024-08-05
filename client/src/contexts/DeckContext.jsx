@@ -1,5 +1,4 @@
 import { createContext, useEffect, useReducer } from "react";
-import { AuthContext } from "./AuthContext"; // Adjust the import path if needed
 import { useAuthContext } from "../hooks/useAuthContext";
 
 // Create DeckContext
