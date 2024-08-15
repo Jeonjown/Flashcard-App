@@ -10,7 +10,7 @@ const DecksRecent = () => {
   const username = userInfo.user.username;
 
   return (
-    <>
+    <div className="flex flex-col items-end">
       <h4 className="border-b-2 border-secondary-100 text-xl font-bold text-gray-600">
         Most Recent
       </h4>
@@ -51,7 +51,7 @@ const DecksRecent = () => {
           <p>No recent decks available</p>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

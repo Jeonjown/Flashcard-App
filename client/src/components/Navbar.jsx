@@ -6,7 +6,7 @@ import { useLogout } from "../hooks/useLogout";
 const Navbar = () => {
   const [profile, setProfile] = useState(false);
   const [hamburger, setHamburger] = useState(false);
-  const { userInfo, dispatch } = useAuthContext();
+  const { userInfo } = useAuthContext();
   const { logout } = useLogout();
   const profileRef = useRef(null);
   const hamburgerRef = useRef(null);
@@ -36,7 +36,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="mt-4 flex min-w-96 items-center">
+    <nav className="relative mt-4 flex min-w-96 items-center">
       <div className="relative md:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const Navbar = () => {
         </svg>
         <div
           ref={hamburgerRef}
-          className={`absolute left-5 top-16 z-10 bg-secondary-100 p-5 ${hamburger ? "block" : "hidden"} rounded-md shadow-md`}
+          className={`absolute left-5 top-16 z-30 bg-secondary-100 p-5 ${hamburger ? "block" : "hidden"} rounded-md shadow-md`}
         >
           <Link to={"/"}>
             <div className="flex items-center hover:cursor-pointer hover:bg-secondary-200">
@@ -123,27 +123,28 @@ const Navbar = () => {
         </h2>
       </Link>
 
+      <div className="ml-auto hidden gap-4 md:flex">
+        {!userInfo && (
+          <>
+            <Link to="/login">
+              <span className="rounded-full border-2 border-primary px-3 py-1 hover:bg-primary hover:text-white">
+                Login
+              </span>
+            </Link>
+            <Link to="/signup">
+              <span className="mr-5 rounded-full border-2 border-primary px-3 py-1 hover:bg-primary hover:text-white">
+                Signup
+              </span>
+            </Link>
+          </>
+        )}
+      </div>
+
       <div
         ref={profileRef}
-        className="relative my-5 ml-auto mr-4 flex items-center hover:scale-105 hover:cursor-pointer"
+        className="relative my-5 ml-auto mr-4 flex items-center hover:cursor-pointer md:ml-2"
         onClickCapture={handleClickProfile}
       >
-        <div className="ml-auto hidden gap-4 md:flex">
-          {!userInfo && (
-            <>
-              <Link to="/login">
-                <span className="rounded-full border-2 border-primary px-3 py-1">
-                  Login
-                </span>
-              </Link>
-              <Link to="/signup">
-                <span className="mr-5 rounded-full border-2 border-primary px-3 py-1">
-                  Signup
-                </span>
-              </Link>
-            </>
-          )}
-        </div>
         <h3 className="ml-2 font-nunito text-lg font-bold text-gray-500 md:text-xl">
           {userInfo && <>{userInfo.user.username}</>}
         </h3>
@@ -162,7 +163,7 @@ const Navbar = () => {
           </svg>
 
           <div
-            className={`absolute right-1 top-10 bg-secondary-100 p-3 ${profile ? "block" : "hidden"} rounded-md shadow-md`}
+            className={`absolute right-1 top-12 z-20 bg-secondary-100 p-3 ${profile ? "block" : "hidden"} rounded-md shadow-md`}
           >
             {!userInfo && (
               <>
@@ -181,7 +182,6 @@ const Navbar = () => {
               className="text-primary hover:cursor-pointer hover:bg-secondary-200"
               onClick={() => {
                 logout();
-                dispatch({ type: "LOGOUT" });
               }}
             >
               Signout

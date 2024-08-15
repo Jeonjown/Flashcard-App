@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
+import Loading from "../components/Loading";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState(""); // Added state for username
-  const { signup, error } = useSignup();
+  const [username, setUsername] = useState("");
+  const { signup, error, loading } = useSignup();
 
   const handleClick = async (e) => {
     e.preventDefault();
-    await signup(username, email, password); // Include username in the signup function
+    await signup(username, email, password);
   };
 
   return (
-    <section className="">
+    <section>
       <div className="mx-auto flex flex-col items-center px-6 py-8 md:h-screen lg:py-0">
         <a
           href="#"
@@ -35,9 +36,7 @@ const Signup = () => {
                 <input
                   type="text"
                   value={username}
-                  onChange={(e) => {
-                    setUsername(e.target.value);
-                  }}
+                  onChange={(e) => setUsername(e.target.value)}
                   name="username"
                   id="username"
                   autoComplete="username"
@@ -56,9 +55,7 @@ const Signup = () => {
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
+                  onChange={(e) => setEmail(e.target.value)}
                   name="email"
                   id="email"
                   autoComplete="email"
@@ -79,24 +76,24 @@ const Signup = () => {
                   name="password"
                   id="password"
                   value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   autoComplete="current-password"
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900"
                   required
                 />
               </div>
-
               <button
                 type="submit"
                 className="w-full rounded-lg bg-primary px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
                 onClick={handleClick}
+                disabled={loading} // Disable the button when loading
               >
-                Sign up
+                {loading ? <Loading /> : "Sign up"}{" "}
+                {/* Show loading indicator or text */}
               </button>
-              <p className="text-[12px] text-primary">{error}</p>
+              {error && <p className="text-[12px] text-primary">{error}</p>}{" "}
+              {/* Show error message if any */}
             </form>
           </div>
         </div>

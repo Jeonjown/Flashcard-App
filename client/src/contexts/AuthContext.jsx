@@ -60,7 +60,7 @@ export const AuthContextProvider = ({ children }) => {
         }
       } catch (error) {
         console.error("Error:", error);
-        dispatch({ type: "LOGOUT" }); // Ensure to clear the userInfo on error
+        dispatch({ type: "LOGOUT" });
       } finally {
         setLoading(false);
       }

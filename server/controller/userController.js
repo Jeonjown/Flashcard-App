@@ -35,7 +35,7 @@ export const signupUser = async (req, res) => {
 
         if (existingUser) {
             console.error('Signup Error: Email already in use', email);
-            return res.status(400).json({ error: 'Email already in use' }); // Use 400 for bad request
+            return res.status(400).json({ error: 'Email already in use' }); //  400 for bad request
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -44,7 +44,7 @@ export const signupUser = async (req, res) => {
 
         const token = createToken(user);
 
-        res.status(201).json({ user, token }); // Use 201 for created resource
+        res.status(201).json({ user, token }); //  201 for created resource
     } catch (error) {
         if (error.code === 11000) {
             // Check if error is related to duplicate key
@@ -56,7 +56,7 @@ export const signupUser = async (req, res) => {
             }
         }
         console.error('Signup Error:', error.message);
-        res.status(500).json({ error: 'Internal server error' }); // Use 500 for server error
+        res.status(500).json({ error: 'Internal server error' }); //  500 for server error
     }
 };
 
@@ -91,7 +91,6 @@ export const loginUser = async (req, res) => {
 
 // Route handler for user logout
 export const logoutUser = async (req, res) => {
-    // No cookie to clear, just send a message
     res.status(200).json({ msg: "Logged out successfully" });
 };
 

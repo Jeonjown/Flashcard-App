@@ -9,13 +9,14 @@ import Home from "./pages/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
 import DeckDetails from "./components/DeckDetails";
 import DeckStudyDetails from "./components/DeckStudyDetails";
+import Loading from "./components/Loading";
 
 function App() {
   const { userInfo, loading } = useAuthContext();
 
   if (loading) {
     // Render a loading indicator while data is being fetched
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <>

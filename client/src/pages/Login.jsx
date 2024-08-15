@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
+import Loading from "../components/Loading";
 
 const Login = () => {
-  const { login, error } = useLogin();
+  const { login, error, loading } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,7 +14,12 @@ const Login = () => {
   };
 
   return (
-    <section className="">
+    <section className="relative">
+      {loading && (
+        <div>
+          <Loading />
+        </div>
+      )}
       <div className="mx-auto flex flex-col items-center px-6 py-8 md:h-screen lg:py-0">
         <div className="w-full rounded-lg bg-white shadow sm:max-w-md md:mt-5 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
@@ -71,10 +77,10 @@ const Login = () => {
               >
                 Sign in
               </button>
-              <p className="text-[12px] text-primary">{error}</p>
+              {error && <p className="text-sm text-red-500">{error}</p>}
               <p className="text-sm font-light text-gray-500">
                 Don’t have an account yet?{" "}
-                <Link to={"/signup"}>
+                <Link to="/signup">
                   <span className="font-medium hover:underline">Sign up</span>
                 </Link>
               </p>

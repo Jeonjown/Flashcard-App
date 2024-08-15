@@ -262,7 +262,7 @@ const FlashcardSlideshow = () => {
 
       <button
         onClick={() => setShowAddForm(!showAddForm)}
-        className="my-3 ml-3 rounded-full border-2 border-primary px-3 py-1 text-sm font-bold text-primary hover:scale-105"
+        className="my-3 ml-3 mt-10 rounded-full border-2 border-primary px-3 py-1 text-sm font-bold text-primary hover:scale-105"
       >
         {showAddForm ? "Cancel" : "Add Flashcard"}
       </button>
@@ -290,9 +290,9 @@ const FlashcardSlideshow = () => {
           />
           <button
             type="submit"
-            className="my-3 ml-3 rounded-full border-2 border-primary px-3 py-1 text-sm font-bold text-primary hover:scale-105"
+            className="my-2 ml-3 rounded-full border-2 border-primary px-3 py-1 text-sm font-bold text-primary hover:scale-105"
           >
-            Add Flashcard
+            Done
           </button>
         </form>
       )}

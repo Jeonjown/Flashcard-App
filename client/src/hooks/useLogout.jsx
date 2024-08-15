@@ -31,7 +31,7 @@ export const useLogout = () => {
 
       // Dispatch logout actions
       dispatch({ type: "LOGOUT" });
-      dispatchDeck({ type: "SET_DECKS", payload: [null] }); // Assuming empty decks after logout
+      dispatchDeck({ type: "SET_DECKS", payload: [] });
     } catch (error) {
       console.error("Logout error:", error);
     }
